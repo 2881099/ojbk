@@ -14,9 +14,9 @@
     1、打开 vs 右击 Module 目录全部编译；
     2、cd WebHost && npm install && dotnet build && dotnet run
 
-    > 生成解决方案时，应该先编译 Module 下的项目，最后再 WebHost + glup
+> 生成解决方案时，应该先编译 Module 下的项目，最后执行 WebHost + gulp-cli
     
-    > 解决方案最后添加 WebHost，全部编译时流程就对了
+> 增加新模块后顺序不对了咋办？移除 WebHost 后保存解决方案，再添加 WebHost，编译流程就对了
 
 ## Infrastructure
 
