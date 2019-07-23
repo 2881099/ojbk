@@ -7,7 +7,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 账户
     /// </summary>
-    public partial class User : BaseEntity<User, Guid>
+    public partial class Users : BaseEntity<Users, Guid>
     {
         /// <summary>
         /// 用户名

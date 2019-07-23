@@ -16,7 +16,6 @@ public partial class APIReturn : ContentResult
     /// 错误消息
     /// </summary>
     [JsonProperty("message")] public string Message { get; protected set; }
-    [JsonProperty("success")] public bool Success { get { return this.Code == 0; } }
 
     public APIReturn() { }
     public APIReturn(int code, string message) => this.SetCode(code);
@@ -52,13 +51,8 @@ public partial class APIReturn : ContentResult
     }
     #endregion
 
-    public static APIReturn 成功 => new APIReturn(0, "成功");
-    public static APIReturn 失败 => new APIReturn(99, "失败");
-    public static APIReturn 记录不存在 => new APIReturn(98, "记录不存在");
-    public static APIReturn 参数格式不正确 => new APIReturn(97, "参数格式不正确");
-    public static APIReturn 没有访问权限 => new APIReturn(96, "没有访问权限");
-    public static APIReturn 权限验证_参数不能为空 => new APIReturn(95, "权限验证_参数不能为空");
-    public static APIReturn 第三方系统内部错误 => new APIReturn(3000000, "第三方系统内部错误");
+    public static APIReturn Success => new APIReturn(0, "成功");
+    public static APIReturn Failed => new APIReturn(99, "失败");
 }
 
 [JsonObject(MemberSerialization.OptIn)]
@@ -76,5 +70,5 @@ public partial class APIReturn<T> : APIReturn
     new public APIReturn<T> SetMessage(string value) { this.Message = value; return this; }
     public APIReturn<T> SetData(T value) { this.Data = value; return this; }
 
-    new public static APIReturn<T> 成功 => new APIReturn<T>(0, "成功");
+    new public static APIReturn<T> Success => new APIReturn<T>(0, "成功");
 }

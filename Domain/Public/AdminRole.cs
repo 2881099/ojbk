@@ -51,6 +51,6 @@ namespace ojbk.Entities
         /// 账户编号
         /// </summary>
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public Users User { get; set; }
     }
 }

@@ -11,15 +11,15 @@ namespace ojbk.Entities
         public List<AdminMenu> Menus { get; set; }
 
         [Navigate(ManyToMany = typeof(AdminRoleUser))]
-        public List<User> Users { get; set; }
+        public List<Users> Users { get; set; }
 
-        public Task AddUser(User user)
+        public Task AddUser(Users user)
         {
             var item = new AdminRoleUser { AdminRoleId = this.Id, UserId = user.Id }.Attach();
             item.IsDeleted = false;
             return item.Save();
         }
-        public Task RemoveUser(User user) =>
+        public Task RemoveUser(Users user) =>
             new AdminRoleUser { AdminRoleId = this.Id, UserId = user.Id }.Delete();
 
         public Task AddMenu(AdminMenu menu)

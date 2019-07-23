@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Module.shop
+namespace Module.admin
 {
     public class Init : IModuleInitializer
     {

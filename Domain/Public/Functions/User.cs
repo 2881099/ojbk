@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ojbk.Entities
 {
-    partial class User
+    partial class Users
     {
         [Navigate(ManyToMany = typeof(AdminRoleUser))]
         public List<AdminRole> Roles { get; set; }
@@ -13,14 +13,13 @@ namespace ojbk.Entities
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="id">账户编号</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public static Task<bool> UpdatePassword(Guid id, string password)
+        public Task<bool> UpdatePassword(string password)
         {
-            var item = new User { Id = id }.Attach();
-            item.PassWord = password;
-            return item.Update();
+            this.Attach();
+            this.PassWord = password;
+            return this.Update();
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace ojbk.Entities
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        async public static Task<User> GetByUserName(string userName) =>
+        async public static Task<Users> GetByUserName(string userName) =>
             (await Select.Where(a => a.UserName == userName).FirstAsync()).Attach();
 
         /// <summary>
@@ -38,13 +37,13 @@ namespace ojbk.Entities
         /// <param name="ip"></param>
         /// <param name="status">状态</param>
         /// <returns></returns>
-        public static Task<bool> UpdateLoginInfo(Guid id, string ip, AccountStatus? status)
+        public Task<bool> UpdateLoginInfo(string ip, AccountStatus? status = null)
         {
-            var item = new User { Id = id }.Attach();
-            item.LoginIP = ip;
-            item.LoginTime = DateTime.Now;
-            if (status != null) item.Status = status.Value;
-            return item.Update();
+            this.Attach();
+            this.LoginIP = ip;
+            this.LoginTime = DateTime.Now;
+            if (status != null) this.Status = status.Value;
+            return this.Update();
         }
 
         /// <summary>
