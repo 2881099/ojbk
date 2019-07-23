@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <WarningLevel>3</WarningLevel>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="wwwroot\" />
+        <Compile Remove="Module\**" />
+        <Compile Remove="wwwroot\module\**" />
+        <Content Remove="Module\**" />
+        <Content Remove="wwwroot\module\**" />
+        <EmbeddedResource Remove="Module\**" />
+        <EmbeddedResource Remove="wwwroot\module\**" />
+        <None Remove="Module\**" />
+        <None Remove="wwwroot\module\**" />
+        <Content Update="nlog.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="gulp --gulpfile gulpfile.js copy-module" />
+    </Target>
+</Project>
