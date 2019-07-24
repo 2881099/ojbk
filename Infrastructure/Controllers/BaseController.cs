@@ -66,7 +66,8 @@ public partial class BaseController : Controller
         (Guid UserId, Guid RandomId, long LoginTime) at = JsonConvert.DeserializeObject<(Guid UserId, Guid RandomId, long LoginTime)>(data);
         var user = await Users.Find(at.UserId);
         if (user.Status == AccountStatus.注销 || user.Status == AccountStatus.禁用) return null;
-        //if (user?.LoginTime.GetTime() != at.LoginTime) user = null; //验证 token 内的登陆时间，与实际的登陆时间，不相等的话等于 token 失效
+        //if (user?.LoginTime.GetTime() != at.LoginTime) user = null;
+        //验证 token 内的登陆时间，与实际的登陆时间，不相等的话等于 token 失效
         return user;
     }
 
