@@ -40,7 +40,7 @@ public partial class BaseController : Controller
             }
             catch
             {
-                context.Result = APIReturn.Failed.SetMessage("登陆TOKEN失效_请重新登陆"); ;
+                context.Result = ApiResult.Failed.SetMessage("登陆TOKEN失效_请重新登陆"); ;
                 return;
             }
         }
@@ -62,7 +62,7 @@ public partial class BaseController : Controller
     }
     async public Task<Users> GetUserByToken(string token)
     {
-        var data = Util.AESDecrypt(token, Encoding.UTF8.GetBytes(g.configuration["login_aes:key"]), Encoding.UTF8.GetBytes(g.configuration["login_aes:iv"])); //解密
+        var data = Util.AESDecrypt(token, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"])); //解密
         (Guid UserId, Guid RandomId, long LoginTime) at = JsonConvert.DeserializeObject<(Guid UserId, Guid RandomId, long LoginTime)>(data);
         var user = await Users.Find(at.UserId);
         if (user.Status == AccountStatus.注销 || user.Status == AccountStatus.禁用) return null;
@@ -76,7 +76,7 @@ public partial class BaseController : Controller
             foreach (var value in context.ModelState.Values)
                 if (value.Errors.Any())
                 {
-                    context.Result = Json(APIReturn.参数格式不正确.SetMessage($"参数格式不正确：{value.Errors.First().ErrorMessage}"));
+                    context.Result = Json(ApiResult.Failed.SetMessage($"参数格式不正确：{value.Errors.First().ErrorMessage}"));
                     return false;
                 }
         return true;

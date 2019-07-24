@@ -9,9 +9,9 @@ namespace Module.admin.Controllers
         public TestController(ILogger<TestController> logger) : base(logger) { }
 
         [HttpGet]
-        public APIReturn List()
+        public ApiResult List()
         {
-            return APIReturn.Success;
+            return ApiResult.Success;
         }
     }
 }

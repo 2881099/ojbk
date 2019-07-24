@@ -3,10 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 [JsonObject(MemberSerialization.OptIn)]
-public partial class APIReturn : ContentResult
+public partial class ApiResult : ContentResult
 {
     /// <summary>
     /// 错误代码
@@ -17,12 +18,12 @@ public partial class APIReturn : ContentResult
     /// </summary>
     [JsonProperty("message")] public string Message { get; protected set; }
 
-    public APIReturn() { }
-    public APIReturn(int code, string message) => this.SetCode(code);
+    public ApiResult() { }
+    public ApiResult(int code, string message) => this.SetCode(code);
 
-    public virtual APIReturn SetCode(int value) { this.Code = value; return this; }
-    public virtual APIReturn SetCode(Enum value) { this.Code = Convert.ToInt32(value); this.Message = value.ToString(); return this; }
-    public virtual APIReturn SetMessage(string value) { this.Message = value; return this; }
+    public virtual ApiResult SetCode(int value) { this.Code = value; return this; }
+    public virtual ApiResult SetCode(Enum value) { this.Code = Convert.ToInt32(value); this.Message = value.ToString(); return this; }
+    public virtual ApiResult SetMessage(string value) { this.Message = value; return this; }
 
     #region form 表单 target=iframe 提交回调处理
     protected void Jsonp(ActionContext context)
@@ -51,24 +52,24 @@ public partial class APIReturn : ContentResult
     }
     #endregion
 
-    public static APIReturn Success => new APIReturn(0, "成功");
-    public static APIReturn Failed => new APIReturn(99, "失败");
+    public static ApiResult Success => new ApiResult(0, "成功");
+    public static ApiResult Failed => new ApiResult(99, "失败");
 }
 
 [JsonObject(MemberSerialization.OptIn)]
-public partial class APIReturn<T> : APIReturn
+public partial class ApiResult<T> : ApiResult
 {
     [JsonProperty("data")] public T Data { get; protected set; }
 
-    public APIReturn() { }
-    public APIReturn(int code) => this.SetCode(code);
-    public APIReturn(string message) => this.SetMessage(message);
-    public APIReturn(int code, string message) => this.SetCode(code).SetMessage(message);
+    public ApiResult() { }
+    public ApiResult(int code) => this.SetCode(code);
+    public ApiResult(string message) => this.SetMessage(message);
+    public ApiResult(int code, string message) => this.SetCode(code).SetMessage(message);
 
-    new public APIReturn<T> SetCode(int value) { this.Code = value; return this; }
-    new public APIReturn<T> SetCode(Enum value) { this.Code = Convert.ToInt32(value); this.Message = value.ToString(); return this; }
-    new public APIReturn<T> SetMessage(string value) { this.Message = value; return this; }
-    public APIReturn<T> SetData(T value) { this.Data = value; return this; }
+    new public ApiResult<T> SetCode(int value) { this.Code = value; return this; }
+    new public ApiResult<T> SetCode(Enum value) { this.Code = Convert.ToInt32(value); this.Message = value.ToString(); return this; }
+    new public ApiResult<T> SetMessage(string value) { this.Message = value; return this; }
+    public ApiResult<T> SetData(T value) { this.Data = value; return this; }
 
-    new public static APIReturn<T> Success => new APIReturn<T>(0, "成功");
+    new public static ApiResult<T> Success => new ApiResult<T>(0, "成功");
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 public static class GlobalExtensions {
@@ -285,7 +286,7 @@ public static class GlobalExtensions {
     /// <returns></returns>
     public static byte[] HexToBytes(this string s)
     {
-        if (s.IsNull())
+        if (string.IsNullOrEmpty(s))
             return null;
         var bytes = new byte[s.Length / 2];
 
