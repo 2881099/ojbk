@@ -7,13 +7,13 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Cms/1.0.0": {
+      "Public/1.0.0": {
         "dependencies": {
           "Infrastructure": "1.0.0",
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
-          "Cms.dll": {}
+          "Public.dll": {}
         }
       },
       "Caching.CSRedis/3.0.51": {
@@ -2131,7 +2131,7 @@
     }
   },
   "libraries": {
-    "Cms/1.0.0": {
+    "Public/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

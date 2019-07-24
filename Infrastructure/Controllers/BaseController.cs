@@ -55,12 +55,12 @@ public partial class BaseController : Controller
     }
 
 
-    public string GetUserToken(Users user)
+    protected string GetUserToken(Users user)
     {
         string text = JsonConvert.SerializeObject(Tuple.Create(user.Id, Guid.NewGuid(), user.LoginTime.GetTime()));
         return Util.AESEncrypt(text, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"]));
     }
-    async public Task<Users> GetUserByToken(string token)
+    async protected Task<Users> GetUserByToken(string token)
     {
         var data = Util.AESDecrypt(token, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"])); //解密
         (Guid UserId, Guid RandomId, long LoginTime) at = JsonConvert.DeserializeObject<(Guid UserId, Guid RandomId, long LoginTime)>(data);
