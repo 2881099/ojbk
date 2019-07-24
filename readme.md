@@ -1,8 +1,11 @@
 # asp.net core 模块化项目结构
 
+模块化项目，集商城，音乐，CRM，视频等等等，随意想做就做，这就是 ojbk 项目，欢迎大家参与！
+
 ## Module
 
 	所有业务接口约定在 Module 划分并行开发，互不依赖
+    可以隔离配置文件（appsettings）、静态文件（wwwroot）、控制器（controller）、视图（views）等等
 
 ## WebHost
 
