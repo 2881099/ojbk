@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Module.admin.Controllers
+namespace Module.Admin.Controllers
 {
     [Route("[controller]")]
     public class TestController : BaseController
