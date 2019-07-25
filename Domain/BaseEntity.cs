@@ -2,6 +2,7 @@
 using FreeSql.DataAnnotations;
 using Newtonsoft.Json;
 using System;
+using System.Data;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -15,6 +16,10 @@ public abstract class BaseEntity
             .UseAutoSyncStructure(true)
             .UseNoneCommandParameter(true)
             .UseConnectionString(DataType.Sqlite, "data source=test.db;max pool size=5")
+            //.UseConnectionString(FreeSql.DataType.MySql, "Data Source=127.0.0.1;Port=3306;User ID=root;Password=root;Initial Catalog=cccddd;Charset=utf8;SslMode=none;Max pool size=2")
+            //.UseConnectionString(FreeSql.DataType.PostgreSQL, "Host=192.168.164.10;Port=5432;Username=postgres;Password=123456;Database=tedb;Pooling=true;Maximum Pool Size=2")
+            //.UseConnectionString(FreeSql.DataType.SqlServer, "Data Source=.;Integrated Security=True;Initial Catalog=freesqlTest;Pooling=true;Max Pool Size=2")
+            //.UseConnectionString(FreeSql.DataType.Oracle, "user id=user1;password=123456;data source=//127.0.0.1:1521/XE;Pooling=true;Max Pool Size=2")
             .Build();
         orm.Aop.CurdBefore += (s, e) => Trace.WriteLine(e.Sql + "\r\n");
         return orm;
@@ -33,12 +38,28 @@ public abstract class BaseEntity
     /// 逻辑删除
     /// </summary>
     public bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// 开启工作单元事务
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
+    public static IUnitOfWork Begin() => Begin(null);
+    public static IUnitOfWork Begin(IsolationLevel? level)
+    {
+        var uow = new BaseEntityUnitOfWork(Orm);
+        uow.IsolationLevel = level;
+        return uow;
+    }
+    protected static IUnitOfWork CurrentUow => BaseEntityUnitOfWork._asyncUow.Value;
 }
 
 [Table(DisableSyncStructure = true)]
 public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
 {
-    public static ISelect<TEntity> Select => Orm.Select<TEntity>().WhereCascade(a => (a as BaseEntity<TEntity>).IsDeleted == false);
+    public static ISelect<TEntity> Select => Orm.Select<TEntity>()
+        .WithTransaction(CurrentUow?.GetOrBeginTransaction(false))
+        .WhereCascade(a => (a as BaseEntity<TEntity>).IsDeleted == false);
     public static ISelect<TEntity> Where(Expression<Func<TEntity, bool>> exp) => Select.Where(exp);
     public static ISelect<TEntity> WhereIf(bool condition, Expression<Func<TEntity, bool>> exp) => Select.WhereIf(condition, exp);
 
@@ -48,8 +69,12 @@ public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
     async Task<bool> UpdateIsDeleted(bool value)
     {
         if (this.Repository == null)
-            return await Orm.Update<TEntity>(this as TEntity).Set(a => (a as BaseEntity<TEntity>).IsDeleted, this.IsDeleted = value).ExecuteAffrowsAsync() == 1;
+            return await Orm.Update<TEntity>(this as TEntity)
+                .WithTransaction(CurrentUow?.GetOrBeginTransaction())
+                .Set(a => (a as BaseEntity<TEntity>).IsDeleted, this.IsDeleted = value).ExecuteAffrowsAsync() == 1;
+
         this.IsDeleted = value;
+        this.Repository.UnitOfWork = CurrentUow;
         return await this.Repository.UpdateAsync(this as TEntity) == 1;
     }
     /// <summary>
@@ -68,7 +93,9 @@ public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
     /// </summary>
     public TEntity Attach()
     {
-        if (this.Repository == null) this.Repository = Orm.GetRepository<TEntity>();
+        if (this.Repository == null)
+            this.Repository = Orm.GetRepository<TEntity>();
+
         var item = this as TEntity;
         this.Repository.Attach(item);
         return item;
@@ -81,7 +108,11 @@ public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
     {
         this.UpdateTime = DateTime.Now;
         if (this.Repository == null)
-            return await Orm.Update<TEntity>().SetSource(this as TEntity).ExecuteAffrowsAsync() == 1;
+            return await Orm.Update<TEntity>()
+                .WithTransaction(CurrentUow?.GetOrBeginTransaction())
+                .SetSource(this as TEntity).ExecuteAffrowsAsync() == 1;
+
+        this.Repository.UnitOfWork = CurrentUow;
         return await this.Repository.UpdateAsync(this as TEntity) == 1;
     }
     /// <summary>
@@ -90,7 +121,10 @@ public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
     async public virtual Task Insert()
     {
         this.CreateTime = DateTime.Now;
-        if (this.Repository == null) this.Repository = Orm.GetRepository<TEntity>();
+        if (this.Repository == null)
+            this.Repository = Orm.GetRepository<TEntity>();
+
+        this.Repository.UnitOfWork = CurrentUow;
         await this.Repository.InsertAsync(this as TEntity);
     }
 
@@ -101,7 +135,10 @@ public abstract class BaseEntity<TEntity> : BaseEntity where TEntity : class
     async public virtual Task Save()
     {
         this.UpdateTime = DateTime.Now;
-        if (this.Repository == null) this.Repository = Orm.GetRepository<TEntity>();
+        if (this.Repository == null)
+            this.Repository = Orm.GetRepository<TEntity>();
+
+        this.Repository.UnitOfWork = CurrentUow;
         await this.Repository.InsertOrUpdateAsync(this as TEntity);
     }
 }
