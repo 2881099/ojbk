@@ -1,0 +1,418 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Domain</name>
+    </assembly>
+    <members>
+        <member name="P:BaseEntity.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:BaseEntity.UpdateTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:BaseEntity.IsDeleted">
+            <summary>
+            逻辑删除
+            </summary>
+        </member>
+        <member name="M:BaseEntity.Begin">
+            <summary>
+            开启工作单元事务
+            </summary>
+            <param name="level"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseEntity`1.Delete">
+            <summary>
+            删除数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BaseEntity`1.Restore">
+            <summary>
+            恢复删除的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BaseEntity`1.Attach">
+            <summary>
+            附加实体，在更新数据时，只更新变化的部分
+            </summary>
+        </member>
+        <member name="M:BaseEntity`1.Update">
+            <summary>
+            更新数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BaseEntity`1.Insert">
+            <summary>
+            插入数据
+            </summary>
+        </member>
+        <member name="M:BaseEntity`1.Save">
+            <summary>
+            更新或插入
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:BaseEntity`2.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="M:BaseEntity`2.Find(`1)">
+            <summary>
+            根据主键值获取数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ojbk.Entities.AdminMenu">
+            <summary>
+            菜单
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.ModuleCode">
+            <summary>
+            所属模块
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Type">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.ParentId">
+            <summary>
+            父节点
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.RouteName">
+            <summary>
+            路由名称
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.RouteParams">
+            <summary>
+            路由参数
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.RouteQuery">
+            <summary>
+            路由参数
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Url">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.IconColor">
+            <summary>
+            图标颜色
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Show">
+            <summary>
+            是否显示
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Target">
+            <summary>
+            打开方式
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.DialogWidth">
+            <summary>
+            对话框宽度
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.DialogHeight">
+            <summary>
+            对话框高度
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.DialogFullscreen">
+            <summary>
+            对话框可全屏
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminMenu.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="M:ojbk.Entities.AdminMenu.QueryChildren(System.Guid)">
+            <summary>
+            查询指定菜单的子菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.AdminMenu.ExistsChild(System.Guid)">
+            <summary>
+            判断该节点是否存在子节点
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.AdminMenu.ExistsNameByParentId(System.String,System.Guid,System.Guid)">
+            <summary>
+            在同级别下名称是重复
+            </summary>
+            <param name="name"></param>
+            <param name="parentId"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.AdminMenu.ExistsWidthModule(System.String)">
+            <summary>
+            根据模块编码判断是否有菜单
+            </summary>
+            <param name="moduleCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ojbk.Entities.AdminMenuType">
+            <summary>
+            菜单类型
+            </summary>
+        </member>
+        <member name="F:ojbk.Entities.AdminMenuType.按钮">
+            <summary>
+            按钮类型，不显示在后台管理的左侧菜单
+            </summary>
+        </member>
+        <member name="T:ojbk.Entities.AdminMenuTarget">
+            <summary>
+            菜单打开方式(只针对链接菜单)
+            </summary>
+        </member>
+        <member name="T:ojbk.Entities.AdminRole">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRole.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRole.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="M:ojbk.Entities.AdminRole.Exists(System.String,System.Nullable{System.Guid})">
+            <summary>
+            判断角色是否存在
+            </summary>
+            <param name="name"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ojbk.Entities.AdminRoleMenu">
+            <summary>
+            角色菜单
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRoleMenu.AdminRoleId">
+            <summary>
+            角色编号
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRoleMenu.AdminMenuId">
+            <summary>
+            菜单编号
+            </summary>
+        </member>
+        <member name="T:ojbk.Entities.AdminRoleUser">
+            <summary>
+            角色账户
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRoleUser.AdminRoleId">
+            <summary>
+            角色编号
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.AdminRoleUser.UserId">
+            <summary>
+            账户编号
+            </summary>
+        </member>
+        <member name="T:ojbk.Entities.Config">
+            <summary>
+            配置项
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Config.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Config.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="M:ojbk.Entities.Config.Exists(System.String)">
+            <summary>
+            验证键值是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Config.Exists(ojbk.Entities.Config)">
+            <summary>
+            数据项是否存在
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Config.QueryByPrefix(System.String)">
+            <summary>
+            根据前缀查询配置项列表
+            </summary>
+            <param name="prefix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Config.GetByKey(System.String)">
+            <summary>
+            根据Key获取对象
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ojbk.Entities.Users">
+            <summary>
+            账户
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.PassWord">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.NickName">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.Phone">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.LoginTime">
+            <summary>
+            最后登录时间
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.LoginIP">
+            <summary>
+            最后登录IP
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.ClosedTime">
+            <summary>
+            注销时间
+            </summary>
+        </member>
+        <member name="P:ojbk.Entities.Users.ClosedBy">
+            <summary>
+            注销人
+            </summary>
+        </member>
+        <member name="M:ojbk.Entities.Users.UpdatePassword(System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="password">密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Users.GetByUserName(System.String)">
+            <summary>
+            根据用户名查询账户信息
+            </summary>
+            <param name="userName">用户名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Users.UpdateLoginInfo(System.String,System.Nullable{ojbk.Entities.AccountStatus})">
+            <summary>
+            修改登录信息
+            </summary>
+            <param name="id"></param>
+            <param name="ip"></param>
+            <param name="status">状态</param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Users.ExistsUserName(System.String,System.Nullable{System.Guid})">
+            <summary>
+            用户名是否存在
+            </summary>
+            <param name="userName">用户名</param>
+            <param name="id">编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Users.ExistsPhone(System.String,System.Nullable{System.Guid})">
+            <summary>
+            手机号是否存在
+            </summary>
+            <param name="phone">手机号</param>
+            <param name="id">编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ojbk.Entities.Users.ExistsEmail(System.String,System.Nullable{System.Guid})">
+            <summary>
+            邮箱是否存在
+            </summary>
+            <param name="email">邮箱</param>
+            <param name="id">编号</param>
+            <returns></returns>
+        </member>
+        <member name="T:ojbk.Entities.AccountStatus">
+            <summary>
+            账户状态
+            </summary>
+        </member>
+    </members>
+</doc>

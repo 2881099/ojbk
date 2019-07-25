@@ -9,7 +9,7 @@ namespace FreeSql
     class UnitOfWork : IUnitOfWork
     {
 //#if ns20
-        public static readonly AsyncLocal<IUnitOfWork> CurrentUow = new AsyncLocal<IUnitOfWork>();
+        public static readonly AsyncLocal<IUnitOfWork> Current = new AsyncLocal<IUnitOfWork>();
 //#endif
 
         protected IFreeSql _fsql;
@@ -20,7 +20,7 @@ namespace FreeSql
         {
             _fsql = fsql;
 //#if ns20
-            CurrentUow.Value = this;
+            Current.Value = this;
 //#endif
         }
 
@@ -30,7 +30,7 @@ namespace FreeSql
             _tran = null;
             _conn = null;
 //#if ns20
-            CurrentUow.Value = null;
+            Current.Value = null;
 //#endif
         }
 
