@@ -73,8 +73,7 @@ namespace ojbk.Entities
         /// <returns></returns>
         public Task<bool> UpdatePassword(string password)
         {
-            this.Attach();
-            this.PassWord = password;
+            this.Attach().PassWord = password;
             return this.Update();
         }
 
@@ -89,7 +88,6 @@ namespace ojbk.Entities
         /// <summary>
         /// 修改登录信息
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="ip"></param>
         /// <param name="status">状态</param>
         /// <returns></returns>

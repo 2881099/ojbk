@@ -9,7 +9,7 @@ public static class GlobalExtensions {
 		if (!string.IsNullOrEmpty(str)) str = Regex.Replace(str, @"<(/?script[\s>])", "<\"+\"$1", RegexOptions.IgnoreCase);
 		if (html == null) return str;
 		return html.Raw(str);
-	}
+    }
 
 	/// <summary>
 	/// 转格林时间，并以ISO8601格式化字符串

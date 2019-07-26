@@ -9,9 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FreeSql.DbContext" Version="0.7.13" />
-        <PackageReference Include="FreeSql.Provider.Sqlite" Version="0.7.13" />
-        <PackageReference Include="FreeSql.Provider.MySql" Version="0.7.13" />
+        <PackageReference Include="FreeSql.DbContext" Version="0.7.16" />
+        <PackageReference Include="FreeSql.Provider.Sqlite" Version="0.7.16" />
+        <PackageReference Include="FreeSql.Provider.MySql" Version="0.7.16" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     </ItemGroup>
     
