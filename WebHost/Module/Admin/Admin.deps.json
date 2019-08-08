@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "650fab8afc2144f6ce36926ddc58114e3f5ceacf"
+    "signature": "f91b3efc5cdba70c58fb129a12cf56c0f8d7d859"
   },
   "compilationOptions": {},
   "targets": {
@@ -53,51 +53,51 @@
           }
         }
       },
-      "FreeSql/0.7.13": {
+      "FreeSql/0.7.16": {
         "dependencies": {
           "SafeObjectPool": "2.1.0",
           "System.ValueTuple": "4.5.0"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.dll": {
-            "assemblyVersion": "0.7.13.0",
-            "fileVersion": "0.7.13.0"
+            "assemblyVersion": "0.7.16.0",
+            "fileVersion": "0.7.16.0"
           }
         }
       },
-      "FreeSql.DbContext/0.7.13": {
+      "FreeSql.DbContext/0.7.16": {
         "dependencies": {
-          "FreeSql": "0.7.13",
+          "FreeSql": "0.7.16",
           "Microsoft.Extensions.DependencyInjection": "2.1.1"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.DbContext.dll": {
-            "assemblyVersion": "0.7.13.0",
-            "fileVersion": "0.7.13.0"
+            "assemblyVersion": "0.7.16.0",
+            "fileVersion": "0.7.16.0"
           }
         }
       },
-      "FreeSql.Provider.MySql/0.7.13": {
+      "FreeSql.Provider.MySql/0.7.16": {
         "dependencies": {
-          "FreeSql": "0.7.13",
+          "FreeSql": "0.7.16",
           "MySql.Data": "8.0.16"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.Provider.MySql.dll": {
-            "assemblyVersion": "0.7.13.0",
-            "fileVersion": "0.7.13.0"
+            "assemblyVersion": "0.7.16.0",
+            "fileVersion": "0.7.16.0"
           }
         }
       },
-      "FreeSql.Provider.Sqlite/0.7.13": {
+      "FreeSql.Provider.Sqlite/0.7.16": {
         "dependencies": {
-          "FreeSql": "0.7.13",
+          "FreeSql": "0.7.16",
           "System.Data.SQLite.Core": "1.0.110"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.Provider.Sqlite.dll": {
-            "assemblyVersion": "0.7.13.0",
-            "fileVersion": "0.7.13.0"
+            "assemblyVersion": "0.7.16.0",
+            "fileVersion": "0.7.16.0"
           }
         }
       },
@@ -2169,9 +2169,9 @@
       },
       "Domain/1.0.0": {
         "dependencies": {
-          "FreeSql.DbContext": "0.7.13",
-          "FreeSql.Provider.MySql": "0.7.13",
-          "FreeSql.Provider.Sqlite": "0.7.13",
+          "FreeSql.DbContext": "0.7.16",
+          "FreeSql.Provider.MySql": "0.7.16",
+          "FreeSql.Provider.Sqlite": "0.7.16",
           "Newtonsoft.Json": "12.0.2"
         },
         "runtime": {
@@ -2228,33 +2228,33 @@
       "path": "csrediscore/3.0.51",
       "hashPath": "csrediscore.3.0.51.nupkg.sha512"
     },
-    "FreeSql/0.7.13": {
+    "FreeSql/0.7.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bPvTdjaEkkQXTCm0pgocmqH0CJRYHSlbKX4s/hPuVVgd6yxz4lMmP7YSsm4fCnGkrEohWWkeZ049063BeyBj1Q==",
-      "path": "freesql/0.7.13",
-      "hashPath": "freesql.0.7.13.nupkg.sha512"
+      "sha512": "sha512-lv5dbP4gXwoHg+/QDh/hx8pBgHwHg3s6hjeBQRhzKCX42YNeUGSqXMfcUkAO3PA4lxjficUr4wiYn/7ADhQDDA==",
+      "path": "freesql/0.7.16",
+      "hashPath": "freesql.0.7.16.nupkg.sha512"
     },
-    "FreeSql.DbContext/0.7.13": {
+    "FreeSql.DbContext/0.7.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pRVQQnZTPM8LtSGe3STLXPcgSSPBEv2ba9rOlR0YqKwaktf4SPjJOP9u3Lub7L/+uvKF1Gdzm+sUlseavPHwAQ==",
-      "path": "freesql.dbcontext/0.7.13",
-      "hashPath": "freesql.dbcontext.0.7.13.nupkg.sha512"
+      "sha512": "sha512-hR2iIZT6uUAx449Tin/CsGuM2XEFcDIahvZpeb7BJfU24GZwcpYIVhiNXm9q2pqUqqZ5YnYYeZKq4nc6Z6KatA==",
+      "path": "freesql.dbcontext/0.7.16",
+      "hashPath": "freesql.dbcontext.0.7.16.nupkg.sha512"
     },
-    "FreeSql.Provider.MySql/0.7.13": {
+    "FreeSql.Provider.MySql/0.7.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Em+NFpaPIQJNS7Z2vBNOrshrIaEhd2Lw/lqn4YLeO522HhTQuiWLk+uBmE63KKjQjnNRHOFlKL1/deQPYPxkwQ==",
-      "path": "freesql.provider.mysql/0.7.13",
-      "hashPath": "freesql.provider.mysql.0.7.13.nupkg.sha512"
+      "sha512": "sha512-58f0iGFkeTlvTUzoDzsXihuabC3v6uBpgkXNbruVYM1/9KbjmfSsL/2rGyjsfXE3Kd/aLRH5jN3jzamZNckq3A==",
+      "path": "freesql.provider.mysql/0.7.16",
+      "hashPath": "freesql.provider.mysql.0.7.16.nupkg.sha512"
     },
-    "FreeSql.Provider.Sqlite/0.7.13": {
+    "FreeSql.Provider.Sqlite/0.7.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ZqQRLZ/a7gE4Iee6xAfpcVQsPk/1NPt7jMX45vKSnDyahpjQbhsGKnkH+HkzQaqs2C8FeWNjTJmkRU0ToHehgA==",
-      "path": "freesql.provider.sqlite/0.7.13",
-      "hashPath": "freesql.provider.sqlite.0.7.13.nupkg.sha512"
+      "sha512": "sha512-TfvC2xCjhOWRyLX2knkBaKD2pMMg4nxd/wCuNP/YsJzraPkOMl0Uj01LmJOzUmEiMsvW1vBovcVGlvCJLpatZQ==",
+      "path": "freesql.provider.sqlite/0.7.16",
+      "hashPath": "freesql.provider.sqlite.0.7.16.nupkg.sha512"
     },
     "Google.Protobuf/3.6.1": {
       "type": "package",

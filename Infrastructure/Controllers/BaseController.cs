@@ -26,7 +26,7 @@ public partial class BaseController : Controller
 
     [FromHeader(Name = "token")] public string Header_token { get; set; }
 
-    public Users LoginUser { get; private set; }
+    public AuthUser LoginUser { get; private set; }
     public BaseController(ILogger logger) { _logger = logger; }
 
     async public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -55,17 +55,17 @@ public partial class BaseController : Controller
     }
 
 
-    protected string GetUserToken(Users user)
+    protected string GetUserToken(AuthUser user)
     {
         string text = JsonConvert.SerializeObject(Tuple.Create(user.Id, Guid.NewGuid(), user.LoginTime.GetTime()));
         return Util.AESEncrypt(text, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"]));
     }
-    async protected Task<Users> GetUserByToken(string token)
+    async protected Task<AuthUser> GetUserByToken(string token)
     {
         var data = Util.AESDecrypt(token, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"])); //解密
-        (Guid UserId, Guid RandomId, long LoginTime) at = JsonConvert.DeserializeObject<(Guid UserId, Guid RandomId, long LoginTime)>(data);
-        var user = await Users.Find(at.UserId);
-        if (user.Status == AccountStatus.注销 || user.Status == AccountStatus.禁用) return null;
+        var at = JsonConvert.DeserializeObject<(int UserId, Guid RandomId, long LoginTime)>(data);
+        var user = await AuthUser.FindAsync(at.UserId);
+        if (user.Status == AuthUserStatus.禁用) return null;
         //if (user?.LoginTime.GetTime() != at.LoginTime) user = null;
         //验证 token 内的登陆时间，与实际的登陆时间，不相等的话等于 token 失效
         return user;

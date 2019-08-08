@@ -51,7 +51,7 @@ namespace Swashbuckle.AspNetCore.Swagger {
 			});
 			return services;
 		}
-		static string[] _docs = new[] { "未分类", "公共", "cms", "后台管理" };
+		static readonly string[] _docs = new[] { "未分类", "公共", "cms", "后台管理" };
 		public static IApplicationBuilder UseCustomizedSwagger(this IApplicationBuilder app, IHostingEnvironment env) {
 			return app.UseSwagger().UseSwaggerUI(options => {
 				foreach (var doc in _docs) options.SwaggerEndpoint($"/swagger/{doc}/swagger.json", doc);

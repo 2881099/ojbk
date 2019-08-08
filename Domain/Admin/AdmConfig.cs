@@ -6,7 +6,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 配置项
     /// </summary>
-    public class Config : BaseEntity<Config, string>
+    public class AdmConfig : BaseEntity<AdmConfig, string>
     {
         /// <summary>
         /// 值
@@ -32,7 +32,7 @@ namespace ojbk.Entities
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static Task<bool> Exists(Config entity) =>
+        public static Task<bool> Exists(AdmConfig entity) =>
             Select.WhereDynamic(entity).AnyAsync();
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace ojbk.Entities
         /// </summary>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        public static Task<List<Config>> QueryByPrefix(string prefix) =>
+        public static Task<List<AdmConfig>> QueryByPrefix(string prefix) =>
             Select.Where(a => a.Id.StartsWith(prefix)).ToListAsync();
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ojbk.Entities
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static Task<Config> GetByKey(string key) =>
-            Find(key);
+        public static Task<AdmConfig> GetByKey(string key) =>
+            FindAsync(key);
     }
 }

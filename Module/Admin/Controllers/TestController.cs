@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Module.Admin.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/module/admin/[controller]")]
     public class TestController : BaseController
     {
         public TestController(ILogger<TestController> logger) : base(logger) { }

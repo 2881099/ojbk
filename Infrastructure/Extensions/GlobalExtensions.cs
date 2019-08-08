@@ -29,7 +29,7 @@ public static class GlobalExtensions {
 		return (long)time.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 	}
 
-	static DateTime dt19700101 = new DateTime(1970, 1, 1);
+	static readonly DateTime dt19700101 = new DateTime(1970, 1, 1);
 	/// <summary>
 	/// 获取时间戳毫秒数，按1970-1-1
 	/// </summary>

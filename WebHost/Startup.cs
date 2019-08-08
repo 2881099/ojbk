@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FreeSql;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace WebHost
@@ -16,12 +18,24 @@ namespace WebHost
     {
         public Startup(IHostingEnvironment env)
         {
+            var orm = new FreeSqlBuilder()
+                .UseAutoSyncStructure(true)
+                .UseNoneCommandParameter(true)
+                .UseConnectionString(DataType.Sqlite, "data source=test.db;max pool size=5")
+                //.UseConnectionString(FreeSql.DataType.MySql, "Data Source=127.0.0.1;Port=3306;User ID=root;Password=root;Initial Catalog=cccddd;Charset=utf8;SslMode=none;Max pool size=2")
+                //.UseConnectionString(FreeSql.DataType.PostgreSQL, "Host=192.168.164.10;Port=5432;Username=postgres;Password=123456;Database=tedb;Pooling=true;Maximum Pool Size=2")
+                //.UseConnectionString(FreeSql.DataType.SqlServer, "Data Source=.;Integrated Security=True;Initial Catalog=freesqlTest;Pooling=true;Max Pool Size=2")
+                //.UseConnectionString(FreeSql.DataType.Oracle, "user id=user1;password=123456;data source=//127.0.0.1:1521/XE;Pooling=true;Max Pool Size=2")
+                .Build();
+            orm.Aop.CurdBefore += (s, e) => Console.WriteLine(e.Sql + "\r\n");
+            BaseEntity.Initialization(orm);
+
             var builder = new ConfigurationBuilder()
                 .LoadInstalledModules(Modules, env)
                 .AddCustomizedJsonFile(Modules, env, "/var/webconfig/xxx/");
 
             this.Configuration = builder.AddEnvironmentVariables().Build();
-            this.env = env;
+            this.Env = env;
 
             Newtonsoft.Json.JsonConvert.DefaultSettings = () =>
             {
@@ -38,14 +52,14 @@ namespace WebHost
 
         public static List<ModuleInfo> Modules = new List<ModuleInfo>();
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment env { get; }
+        public IHostingEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             //下面这行代码依赖redis-server，注释后系统将以memory作为缓存存储的介质
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IHostingEnvironment>(env);
+            services.AddSingleton<IHostingEnvironment>(Env);
             services.AddScoped<CustomExceptionFilter>();
 
             services.AddSession(a =>
@@ -55,9 +69,9 @@ namespace WebHost
             });
             services.AddCors(options => options.AddPolicy("cors_all", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
             services.AddCustomizedMvc(Modules);
-            Modules.ForEach(module => module.Initializer?.ConfigureServices(services, env));
+            Modules.ForEach(module => module.Initializer?.ConfigureServices(services, Env));
 
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
                 services.AddCustomizedSwaggerGen();
         }
 
