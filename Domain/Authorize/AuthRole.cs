@@ -1,4 +1,5 @@
-﻿using FreeSql.DataAnnotations;
+﻿using FreeSql;
+using FreeSql.DataAnnotations;
 using System.Collections.Generic;
 
 namespace ojbk.Entities
@@ -6,7 +7,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 角色
     /// </summary>
-    public partial class AuthRole : BaseEntity<AuthRole, int>
+    public partial class AuthRole : BaseEntity<AuthRole, int>, ITenant
     {
         /// <summary>
         /// 名称
@@ -17,14 +18,15 @@ namespace ojbk.Entities
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        public string TenantId { get; set; }
     }
 
     #region ManyToMany AdmRoute
     partial class AuthRole
     {
-        [Navigate(ManyToMany = typeof(AdmRouteRole))]
-        public List<AdmRoute> Routes { get; set; }
-        public class AdmRouteRole : BaseEntity<AdmRouteRole>
+        [Navigate(ManyToMany = typeof(AuthRoleAdmRoute))]
+        public List<AdmRoute> AdmRoutes { get; set; }
+        public class AuthRoleAdmRoute : BaseEntity<AuthRoleAdmRoute>
         {
             public int RoleId { get; set; }
             public AuthRole Role { get; set; }
@@ -33,18 +35,18 @@ namespace ojbk.Entities
             public AdmRoute AdmRoute { get; set; }
         }
     }
-    partial class AdmRoute {[Navigate(ManyToMany = typeof(AuthRole.AdmRouteRole))] public List<AuthRole> Roles { get; set; } }
+    partial class AdmRoute {[Navigate(ManyToMany = typeof(AuthRole.AuthRoleAdmRoute))] public List<AuthRole> Roles { get; set; } }
     #endregion
 
     #region ManyToMany AuthUser
     partial class AuthRole
     {
         [Navigate("RoleId")]
-        public List<AuthRole.RoleUser> RoleUsers { get; set; }
+        public List<AuthRole.AuthRoleUser> RoleUsers { get; set; }
 
-        [Navigate(ManyToMany = typeof(AuthRole.RoleUser))]
+        [Navigate(ManyToMany = typeof(AuthRole.AuthRoleUser))]
         public List<AuthUser> Users { get; set; }
-        public class RoleUser : BaseEntity<RoleUser>
+        public class AuthRoleUser : BaseEntity<AuthRoleUser>
         {
             public int RoleId { get; set; }
             public AuthRole Role { get; set; }
@@ -53,23 +55,23 @@ namespace ojbk.Entities
             public AuthUser User { get; set; }
         }
     }
-    partial class AuthUser {[Navigate(ManyToMany = typeof(AuthRole.RoleUser))] public List<AuthRole> Roles { get; set; } }
+    partial class AuthUser {[Navigate(ManyToMany = typeof(AuthRole.AuthRoleUser))] public List<AuthRole> Roles { get; set; } }
     #endregion
 
     #region ManyToMany OrgPost
     partial class AuthRole
     {
-        [Navigate(ManyToMany = typeof(AuthRole.RolePost))]
-        public List<OrgPost> Posts { get; set; }
-        public class RolePost : BaseEntity<RolePost>
+        [Navigate(ManyToMany = typeof(AuthRole.AuthRolePost))]
+        public List<OrgPost> OrgPosts { get; set; }
+        public class AuthRolePost : BaseEntity<AuthRolePost>
         {
             public int RoleId { get; set; }
             public AuthRole Role { get; set; }
 
-            public int PostId { get; set; }
-            public OrgPost Post { get; set; }
+            public int OrgPostId { get; set; }
+            public OrgPost OrgPost { get; set; }
         }
     }
-    partial class OrgPost {[Navigate(ManyToMany = typeof(AuthRole.RolePost))] public List<AuthRole> Roles { get; set; } }
+    partial class OrgPost {[Navigate(ManyToMany = typeof(AuthRole.AuthRolePost))] public List<AuthRole> Roles { get; set; } }
     #endregion
 }

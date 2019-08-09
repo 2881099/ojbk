@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FreeSql;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ojbk.Entities

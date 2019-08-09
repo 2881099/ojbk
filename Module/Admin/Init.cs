@@ -10,6 +10,8 @@ namespace Module.Admin
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
+
+            FreeSql.BaseEntity.CurrentTenantId = "1";
             var testsql = new AuthUser().SelectAdmRoute.ToSql();
 
             var testlist = new AuthUser().SelectAdmRoute.ToList();

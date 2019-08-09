@@ -1,53 +1,53 @@
-﻿using FreeSql.DataAnnotations;
+﻿using FreeSql;
+using FreeSql.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/// <summary>
-/// 树状基类
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-/// <typeparam name="TKey"></typeparam>
-[Table(DisableSyncStructure = true)]
-public abstract class BaseEntityTree<TEntity, TKey> : BaseEntity<TEntity, TKey> where TEntity : class
+namespace FreeSql
 {
     /// <summary>
-    /// 父级id
+    /// 树状基类
     /// </summary>
-    public TKey ParentId
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    [Table(DisableSyncStructure = true)]
+    public abstract class BaseEntityTree<TEntity, TKey> : BaseEntity<TEntity, TKey> where TEntity : class
     {
-        get => _ParentId;
-        set
+        /// <summary>
+        /// 父级id
+        /// </summary>
+        public TKey ParentId
         {
-            if (Equals(value, default) && Equals(value, Id)) throw new ArgumentException("ParentId 值不能与 Id 相同");
-            _ParentId = value;
+            get => _ParentId;
+            set
+            {
+                if (Equals(value, default) == false && Equals(value, Id))
+                    throw new ArgumentException("ParentId 值不能与 Id 相同");
+                _ParentId = value;
+            }
         }
-    }
-    public TEntity Parent { get; set; }
-    private TKey _ParentId;
+        public TEntity Parent { get; set; }
+        private TKey _ParentId;
 
-    /// <summary>
-    /// 下级列表
-    /// </summary>
-    [Navigate("ParentId")]
-    public List<TEntity> Childs { get; set; }
+        /// <summary>
+        /// 下级列表
+        /// </summary>
+        [Navigate("ParentId")]
+        public List<TEntity> Childs { get; set; }
 
-    /// <summary>
-    /// 名称
-    /// </summary>
-    public string Name { get; set; }
-    /// <summary>
-    /// 名称：技术部-前端
-    /// </summary>
-    public string FullName { get; set; }
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 名称：技术部-前端
+        /// </summary>
+        public string FullName { get; set; }
 
-    void RefershFullName()
-    {
-        var buf = new List<TEntity>();
-        buf.Add(this as TEntity);
-        var childs = Select.WhereDynamic(this)
+        public List<TEntity> GetAllChilds() => Select.WhereDynamic(this)
             .IncludeMany(a => (a as BaseEntityTree<TEntity, TKey>).Childs,
                 t1 => t1.IncludeMany(a1 => (a1 as BaseEntityTree<TEntity, TKey>).Childs,
                 t2 => t2.IncludeMany(a2 => (a2 as BaseEntityTree<TEntity, TKey>).Childs,
@@ -70,60 +70,95 @@ public abstract class BaseEntityTree<TEntity, TKey> : BaseEntity<TEntity, TKey> 
                 .SelectMany(a8 => (a8 as BaseEntityTree<TEntity, TKey>)?.Childs
                 .SelectMany(a9 => (a9 as BaseEntityTree<TEntity, TKey>)?.Childs
                 .SelectMany(a10 => (a10 as BaseEntityTree<TEntity, TKey>)?.Childs))))))))))).Where(a => a != null).ToList();
-        buf.AddRange(childs);
-        var repo = Orm.GetRepository<TEntity>();
-        buf = repo.Select.WhereDynamic(buf)
-            .Include(a => ((((((((((a as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent
-                as BaseEntityTree<TEntity, TKey>).Parent).ToList(true);
-        foreach (var item in buf)
-        {
-            var up = item as BaseEntityTree<TEntity, TKey>;
-            up.Name = up.Name;
-            var cur = up.Parent as BaseEntityTree<TEntity, TKey>;
-            while (cur != null)
-            {
-                up.Name = $"{cur.Name}-{up.Name}";
-                cur = cur.Parent as BaseEntityTree<TEntity, TKey>;
-            }
-        }
-        repo.Update(buf);
-    }
 
-    public override bool Update()
-    {
-        var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
-        var ret = base.Update();
-        if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
-        return ret;
-    }
-    async public override Task<bool> UpdateAsync()
-    {
-        var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
-        var ret = await base.UpdateAsync();
-        if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
-        return ret;
-    }
-    public override TEntity Save()
-    {
-        var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
-        var ret = base.Save();
-        if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
-        return ret;
-    }
-    async public override Task<TEntity> SaveAsync()
-    {
-        var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
-        var ret = await base.SaveAsync();
-        if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
-        return ret;
+        protected void RefershFullName()
+        {
+            var buf = new List<TEntity>();
+            buf.Add(this as TEntity);
+            buf.AddRange(this.GetAllChilds());
+            var repo = Orm.GetRepository<TEntity>();
+            repo.UnitOfWork = UnitOfWork.Current.Value;
+            buf = repo.Select.WhereDynamic(buf)
+                .Include(a => ((((((((((a as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent
+                    as BaseEntityTree<TEntity, TKey>).Parent).ToList(true);
+            foreach (var item in buf)
+            {
+                var up = item as BaseEntityTree<TEntity, TKey>;
+                up.Name = up.Name;
+                var cur = up.Parent as BaseEntityTree<TEntity, TKey>;
+                while (cur != null)
+                {
+                    up.Name = $"{cur.Name}-{up.Name}";
+                    cur = cur.Parent as BaseEntityTree<TEntity, TKey>;
+                }
+            }
+            repo.Update(buf);
+        }
+
+        T UpdateIsDelete<T>(bool value, Func<BaseRepository<TEntity>, List<TEntity>, T> func)
+        {
+            var childs = GetAllChilds();
+            childs.Add(this as TEntity);
+            var repo = Orm.GetRepository<TEntity>();
+            repo.UnitOfWork = UnitOfWork.Current.Value;
+            repo.Attach(childs);
+            foreach (var item in childs)
+                (item as BaseEntity).IsDeleted = false;
+            return func(repo, childs);
+        }
+        public override bool Delete() => UpdateIsDelete(true, (repo, chis) => repo.Update(chis)) > 0;
+        async public override Task<bool> DeleteAsync() => await UpdateIsDelete(true, (repo, chis) => repo.UpdateAsync(chis)) > 0;
+
+        public override bool Restore() => UpdateIsDelete(false, (repo, chis) => repo.Update(chis)) > 0;
+        async public override Task<bool> RestoreAsync() => await UpdateIsDelete(false, (repo, chis) => repo.UpdateAsync(chis)) > 0;
+
+        public override TEntity Insert()
+        {
+            var ret = base.Insert();
+            RefershFullName();
+            return ret;
+        }
+        async public override Task<TEntity> InsertAsync()
+        {
+            var ret = await base.InsertAsync();
+            RefershFullName();
+            return ret;
+        }
+        public override bool Update()
+        {
+            var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
+            var ret = base.Update();
+            if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
+            return ret;
+        }
+        async public override Task<bool> UpdateAsync()
+        {
+            var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
+            var ret = await base.UpdateAsync();
+            if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
+            return ret;
+        }
+        public override TEntity Save()
+        {
+            var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
+            var ret = base.Save();
+            if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
+            return ret;
+        }
+        async public override Task<TEntity> SaveAsync()
+        {
+            var old = Find(this.Id) as BaseEntityTree<TEntity, TKey>;
+            var ret = await base.SaveAsync();
+            if (old.Name != this.Name || Equals(old.ParentId, old.ParentId) == false) RefershFullName();
+            return ret;
+        }
     }
 }
-

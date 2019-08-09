@@ -1,7 +1,6 @@
 ﻿using FreeSql;
 using FreeSql.DataAnnotations;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace ojbk.Entities
@@ -9,14 +8,14 @@ namespace ojbk.Entities
     /// <summary>
     /// 后台路由，一级=菜单
     /// </summary>
-    public partial class AdmRoute : BaseEntity<AdmRoute, int>
+    public partial class AdmRoute : BaseEntity<AdmRoute, int>, ITenant
     {
         static AdmRoute()
         {
             #region 初始化菜单
-            if (AdmRoute.Select.Any() == false)
+            if (Orm.Select<AdmRoute>().Any() == false)
             {
-                Orm.GetRepository<AdmRoute>().Insert(new[]
+                var adds = new[]
                 {
                     new AdmRoute
                     {
@@ -95,7 +94,8 @@ namespace ojbk.Entities
                         })
                     },
 
-                });
+                };
+                Orm.GetRepository<AdmRoute>().Insert(adds);
             }
             #endregion
         }
@@ -107,6 +107,7 @@ namespace ojbk.Entities
         /// 父节点
         /// </summary>
         public int ParentId { get; set; }
+        [Navigate("ParentId")]
         public AdmRoute Parent { get; set; }
 
         /// <summary>
@@ -123,5 +124,6 @@ namespace ojbk.Entities
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        public string TenantId { get; set; }
     }
 }

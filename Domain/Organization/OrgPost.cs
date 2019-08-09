@@ -1,7 +1,6 @@
-﻿using FreeSql.DataAnnotations;
-using System;
+﻿using FreeSql;
+using FreeSql.DataAnnotations;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ojbk.Entities
 {
@@ -17,6 +16,7 @@ namespace ojbk.Entities
         /// <summary>
         /// 部门
         /// </summary>
+        [Navigate("DepartmentId")]
         public OrgDepartment Department { get; set; }
 
         /// <summary>

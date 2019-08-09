@@ -1,7 +1,6 @@
 ﻿using FreeSql;
 using FreeSql.DataAnnotations;
 using System;
-using System.Collections.Generic;
 
 namespace ojbk.Entities
 {
@@ -54,6 +53,7 @@ namespace ojbk.Entities
         /// <summary>
         /// 员工
         /// </summary>
+        [Navigate("PersonId")]
         public OrgPerson Person { get; set; }
 
         /// <summary>

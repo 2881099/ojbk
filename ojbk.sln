@@ -24,6 +24,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Public", "Module\Public\Pub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost", "WebHost\WebHost.csproj", "{84E44593-DEA0-4E92-ABD6-7B714D8B1D87}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeSql", "..\FreeSql\FreeSql\FreeSql.csproj", "{4DAFDF0D-2DD6-4279-84DC-106C4490454D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeSql.Provider.Sqlite", "..\FreeSql\Providers\FreeSql.Provider.Sqlite\FreeSql.Provider.Sqlite.csproj", "{4B8F2F38-D1AE-4637-977C-80A3A9C2081D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,14 @@ Global
 		{84E44593-DEA0-4E92-ABD6-7B714D8B1D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84E44593-DEA0-4E92-ABD6-7B714D8B1D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84E44593-DEA0-4E92-ABD6-7B714D8B1D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DAFDF0D-2DD6-4279-84DC-106C4490454D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DAFDF0D-2DD6-4279-84DC-106C4490454D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DAFDF0D-2DD6-4279-84DC-106C4490454D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DAFDF0D-2DD6-4279-84DC-106C4490454D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8F2F38-D1AE-4637-977C-80A3A9C2081D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8F2F38-D1AE-4637-977C-80A3A9C2081D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8F2F38-D1AE-4637-977C-80A3A9C2081D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8F2F38-D1AE-4637-977C-80A3A9C2081D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

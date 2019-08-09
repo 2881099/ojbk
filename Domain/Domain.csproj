@@ -10,10 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FreeSql.DbContext" Version="0.7.16" />
-        <PackageReference Include="FreeSql.Provider.Sqlite" Version="0.7.16" />
-        <PackageReference Include="FreeSql.Provider.MySql" Version="0.7.16" />
+        <PackageReference Include="FreeSql.DbContext" Version="0.8.4" />
+        <PackageReference Include="FreeSql.Provider.MySql" Version="0.8.4" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\FreeSql\FreeSql\FreeSql.csproj" />
+      <ProjectReference Include="..\..\FreeSql\Providers\FreeSql.Provider.Sqlite\FreeSql.Provider.Sqlite.csproj" />
     </ItemGroup>
     
 </Project>
