@@ -1,6 +1,7 @@
 ﻿using FreeSql;
 using FreeSql.DataAnnotations;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -55,6 +56,12 @@ namespace FreeSql
             (item as BaseEntity<TEntity>)?.Attach();
             return item;
         }
+
+        /// <summary>
+        /// 获取新的仓库对象
+        /// </summary>
+        /// <returns></returns>
+        public static DefaultRepository<TEntity, TKey> GetRepository() => Orm.GetRepository<TEntity, TKey>();
     }
 
     /// <summary>
@@ -69,12 +76,12 @@ namespace FreeSql
             if (this.Repository == null)
                 return Orm.Update<TEntity>(this as TEntity)
                     .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
-                    .Set(a => (a as BaseEntity).IsDeleted, this.IsDeleted = value).ExecuteAffrows() == 1;
+                    .Set(a => (a as BaseEntity).IsDeleted, this.IsDeleted = value).ExecuteAffrows() > 0;
 
             this.SetTenantId();
             this.IsDeleted = value;
             this.Repository.UnitOfWork = UnitOfWork.Current.Value;
-            return this.Repository.Update(this as TEntity) == 1;
+            return this.Repository.Update(this as TEntity) > 0;
         }
         /// <summary>
         /// 删除数据
@@ -88,6 +95,21 @@ namespace FreeSql
         public virtual bool Restore() => this.UpdateIsDeleted(false);
 
         /// <summary>
+        /// 物理删除
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool DeletePhysical()
+        {
+            if (this.Repository == null)
+                return Orm.Delete<TEntity>(this as TEntity)
+                    .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
+                    .ExecuteAffrows() > 0;
+
+            this.Repository.UnitOfWork = UnitOfWork.Current.Value;
+            return this.Repository.Delete(this as TEntity) > 0;
+        }
+
+        /// <summary>
         /// 更新数据
         /// </summary>
         /// <returns></returns>
@@ -97,11 +119,11 @@ namespace FreeSql
             if (this.Repository == null)
                 return Orm.Update<TEntity>()
                     .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
-                    .SetSource(this as TEntity).ExecuteAffrows() == 1;
+                    .SetSource(this as TEntity).ExecuteAffrows() > 0;
 
             this.SetTenantId();
             this.Repository.UnitOfWork = UnitOfWork.Current.Value;
-            return this.Repository.Update(this as TEntity) == 1;
+            return this.Repository.Update(this as TEntity) > 0;
         }
         /// <summary>
         /// 插入数据

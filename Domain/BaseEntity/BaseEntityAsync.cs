@@ -39,6 +39,12 @@ namespace FreeSql
             (item as BaseEntity<TEntity>)?.Attach();
             return item;
         }
+
+        /// <summary>
+        /// 获取新的仓库对象
+        /// </summary>
+        /// <returns></returns>
+        new public static BaseRepository<TEntity, TKey> GetRepository() => Orm.GetRepository<TEntity, TKey>();
     }
 
     /// <summary>
@@ -48,16 +54,22 @@ namespace FreeSql
     [Table(DisableSyncStructure = true)]
     public abstract class BaseEntityAsync<TEntity> : BaseEntityReadOnly<TEntity> where TEntity : class
     {
+        /// <summary>
+        /// 获取新的仓库对象
+        /// </summary>
+        /// <returns></returns>
+        public static BaseRepository<TEntity> GetRepository() => Orm.GetRepository<TEntity>();
+
         async Task<bool> UpdateIsDeletedAsync(bool value)
         {
             if (this.Repository == null)
                 return await Orm.Update<TEntity>(this as TEntity)
                     .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
-                    .Set(a => (a as BaseEntity).IsDeleted, this.IsDeleted = value).ExecuteAffrowsAsync() == 1;
+                    .Set(a => (a as BaseEntity).IsDeleted, this.IsDeleted = value).ExecuteAffrowsAsync() > 0;
 
             this.IsDeleted = value;
             this.Repository.UnitOfWork = UnitOfWork.Current.Value;
-            return await this.Repository.UpdateAsync(this as TEntity) == 1;
+            return await this.Repository.UpdateAsync(this as TEntity) > 0;
         }
         /// <summary>
         /// 删除数据
@@ -71,6 +83,21 @@ namespace FreeSql
         public virtual Task<bool> RestoreAsync() => this.UpdateIsDeletedAsync(false);
 
         /// <summary>
+        /// 物理删除
+        /// </summary>
+        /// <returns></returns>
+        async public virtual Task<bool> DeletePhysicalAsync()
+        {
+            if (this.Repository == null)
+                return await Orm.Delete<TEntity>(this as TEntity)
+                    .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
+                    .ExecuteAffrowsAsync() > 0;
+
+            this.Repository.UnitOfWork = UnitOfWork.Current.Value;
+            return await this.Repository.DeleteAsync(this as TEntity) > 0;
+        }
+
+        /// <summary>
         /// 更新数据
         /// </summary>
         /// <returns></returns>
@@ -80,11 +107,11 @@ namespace FreeSql
             if (this.Repository == null)
                 return await Orm.Update<TEntity>()
                     .WithTransaction(UnitOfWork.Current.Value?.GetOrBeginTransaction())
-                    .SetSource(this as TEntity).ExecuteAffrowsAsync() == 1;
+                    .SetSource(this as TEntity).ExecuteAffrowsAsync() > 0;
 
             this.SetTenantId();
             this.Repository.UnitOfWork = UnitOfWork.Current.Value;
-            return await this.Repository.UpdateAsync(this as TEntity) == 1;
+            return await this.Repository.UpdateAsync(this as TEntity) > 0;
         }
         /// <summary>
         /// 插入数据

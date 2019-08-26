@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FreeSql
 {
     /// <summary>
-    /// 树状基类
+    /// 简单的十级树状结构基类
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TKey"></typeparam>

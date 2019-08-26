@@ -37,7 +37,7 @@ namespace ojbk.Entities
     #region ManyToMany OrgPerson
     partial class OrgPost
     {
-        [Navigate(ManyToMany = typeof(OrgPostPerson))]
+        [Navigate(ManyToMany = typeof(OrgPost.OrgPostPerson))]
         public List<OrgPerson> Persons { get; set; }
         public class OrgPostPerson : BaseEntity<OrgPostPerson>
         {

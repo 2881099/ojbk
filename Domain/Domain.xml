@@ -262,6 +262,12 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:FreeSql.BaseEntity`2.GetRepository">
+            <summary>
+            获取新的仓库对象
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:FreeSql.BaseEntity`1">
             <summary>
             包括 CreateTime/UpdateTime/IsDeleted、以及 CRUD 异步和同步方法的实体基类
@@ -277,6 +283,12 @@
         <member name="M:FreeSql.BaseEntity`1.Restore">
             <summary>
             恢复删除的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FreeSql.BaseEntity`1.DeletePhysical">
+            <summary>
+            物理删除
             </summary>
             <returns></returns>
         </member>
@@ -318,11 +330,23 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:FreeSql.BaseEntityAsync`2.GetRepository">
+            <summary>
+            获取新的仓库对象
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:FreeSql.BaseEntityAsync`1">
             <summary>
             包括 CreateTime/UpdateTime/IsDeleted、以及 CRUD 异步方法的实体基类
             </summary>
             <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:FreeSql.BaseEntityAsync`1.GetRepository">
+            <summary>
+            获取新的仓库对象
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:FreeSql.BaseEntityAsync`1.DeleteAsync">
             <summary>
@@ -333,6 +357,12 @@
         <member name="M:FreeSql.BaseEntityAsync`1.RestoreAsync">
             <summary>
             恢复删除的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FreeSql.BaseEntityAsync`1.DeletePhysicalAsync">
+            <summary>
+            物理删除
             </summary>
             <returns></returns>
         </member>

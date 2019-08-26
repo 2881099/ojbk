@@ -24,6 +24,7 @@
         <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="FreeSql.Provider.MySql" Version="0.8.8" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

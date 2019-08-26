@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "5a7d5983e1897dab67b09e565f68f0750d551a4e"
+    "signature": "a37a836dd1513d753a3befe92af43ad23a0dd997"
   },
   "compilationOptions": {},
   "targets": {
@@ -16,22 +16,9 @@
           "Cms.dll": {}
         }
       },
-      "BouncyCastle.NetCore/1.8.3": {
-        "dependencies": {
-          "NETStandard.Library": "2.0.3",
-          "System.Reflection": "4.3.0",
-          "System.Reflection.TypeExtensions": "4.3.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
-            "assemblyVersion": "1.8.2.0",
-            "fileVersion": "1.8.18099.1"
-          }
-        }
-      },
       "Caching.CSRedis/3.0.51": {
         "dependencies": {
-          "CSRedisCore": "3.0.51",
+          "CSRedisCore": "3.1.5",
           "Microsoft.Extensions.Caching.Abstractions": "2.1.2"
         },
         "runtime": {
@@ -41,50 +28,52 @@
           }
         }
       },
-      "CSRedisCore/3.0.51": {
+      "CSRedisCore/3.1.5": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.2",
-          "SafeObjectPool": "2.1.1"
+          "SafeObjectPool": "2.1.1",
+          "System.ValueTuple": "4.5.0"
         },
         "runtime": {
           "lib/netstandard2.0/CSRedisCore.dll": {
-            "assemblyVersion": "3.0.51.0",
-            "fileVersion": "3.0.51.0"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.1.5.0"
           }
         }
       },
-      "FreeSql.DbContext/0.8.4": {
+      "FreeSql/0.8.5": {
         "dependencies": {
-          "FreeSql": "0.8.4",
+          "SafeObjectPool": "2.1.1",
+          "System.ValueTuple": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FreeSql.dll": {
+            "assemblyVersion": "0.8.5.0",
+            "fileVersion": "0.8.5.0"
+          }
+        }
+      },
+      "FreeSql.DbContext/0.8.5": {
+        "dependencies": {
+          "FreeSql": "0.8.5",
           "Microsoft.Extensions.DependencyInjection": "2.1.1"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.DbContext.dll": {
-            "assemblyVersion": "0.8.4.0",
-            "fileVersion": "0.8.4.0"
+            "assemblyVersion": "0.8.5.0",
+            "fileVersion": "0.8.5.0"
           }
         }
       },
-      "FreeSql.Provider.MySql/0.8.4": {
+      "FreeSql.Provider.Sqlite/0.8.5": {
         "dependencies": {
-          "FreeSql": "0.8.4",
-          "MySql.Data": "8.0.16"
+          "FreeSql": "0.8.5",
+          "System.Data.SQLite.Core": "1.0.110"
         },
         "runtime": {
-          "lib/netstandard2.0/FreeSql.Provider.MySql.dll": {
-            "assemblyVersion": "0.8.4.0",
-            "fileVersion": "0.8.4.0"
-          }
-        }
-      },
-      "Google.Protobuf/3.6.1": {
-        "dependencies": {
-          "NETStandard.Library": "2.0.3"
-        },
-        "runtime": {
-          "lib/netstandard1.0/Google.Protobuf.dll": {
-            "assemblyVersion": "3.6.1.0",
-            "fileVersion": "3.6.1.0"
+          "lib/netstandard2.0/FreeSql.Provider.Sqlite.dll": {
+            "assemblyVersion": "0.8.5.0",
+            "fileVersion": "0.8.5.0"
           }
         }
       },
@@ -1060,21 +1049,6 @@
           }
         }
       },
-      "MySql.Data/8.0.16": {
-        "dependencies": {
-          "BouncyCastle.NetCore": "1.8.3",
-          "Google.Protobuf": "3.6.1",
-          "System.Configuration.ConfigurationManager": "4.4.1",
-          "System.Security.Permissions": "4.5.0",
-          "System.Text.Encoding.CodePages": "4.5.1"
-        },
-        "runtime": {
-          "lib/netstandard2.0/MySql.Data.dll": {
-            "assemblyVersion": "8.0.16.0",
-            "fileVersion": "8.0.16.0"
-          }
-        }
-      },
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
@@ -1313,17 +1287,6 @@
           "lib/netstandard2.0/System.ComponentModel.Annotations.dll": {
             "assemblyVersion": "4.2.1.0",
             "fileVersion": "4.6.26515.6"
-          }
-        }
-      },
-      "System.Configuration.ConfigurationManager/4.4.1": {
-        "dependencies": {
-          "System.Security.Cryptography.ProtectedData": "4.4.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "4.6.25921.2"
           }
         }
       },
@@ -1860,14 +1823,6 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/4.4.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.25519.3"
-          }
-        }
-      },
       "System.Security.Cryptography.X509Certificates/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -2145,32 +2100,13 @@
       },
       "Domain/1.0.0": {
         "dependencies": {
-          "FreeSql": "0.8.4",
-          "FreeSql.DbContext": "0.8.4",
-          "FreeSql.Provider.MySql": "0.8.4",
-          "FreeSql.Provider.Sqlite": "0.8.4",
+          "CSRedisCore": "3.1.5",
+          "FreeSql.DbContext": "0.8.5",
+          "FreeSql.Provider.Sqlite": "0.8.5",
           "Newtonsoft.Json": "12.0.2"
         },
         "runtime": {
           "Domain.dll": {}
-        }
-      },
-      "FreeSql/0.8.4": {
-        "dependencies": {
-          "SafeObjectPool": "2.1.1",
-          "System.ValueTuple": "4.5.0"
-        },
-        "runtime": {
-          "FreeSql.dll": {}
-        }
-      },
-      "FreeSql.Provider.Sqlite/0.8.4": {
-        "dependencies": {
-          "FreeSql": "0.8.4",
-          "System.Data.SQLite.Core": "1.0.110"
-        },
-        "runtime": {
-          "FreeSql.Provider.Sqlite.dll": {}
         }
       },
       "Infrastructure/1.0.0": {
@@ -2202,13 +2138,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "BouncyCastle.NetCore/1.8.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-An0cxp/uGPkMWfjAVyHJWBQ9igea74Ma8rtMnpkEwjemx8EoVo7IUIFpFfxpBgVuSbpQueKo2m/CoSxxfLHTtw==",
-      "path": "bouncycastle.netcore/1.8.3",
-      "hashPath": "bouncycastle.netcore.1.8.3.nupkg.sha512"
-    },
     "Caching.CSRedis/3.0.51": {
       "type": "package",
       "serviceable": true,
@@ -2216,33 +2145,33 @@
       "path": "caching.csredis/3.0.51",
       "hashPath": "caching.csredis.3.0.51.nupkg.sha512"
     },
-    "CSRedisCore/3.0.51": {
+    "CSRedisCore/3.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1WT0b+p042hoG6ivrvUPpoA8kQ6lfMu9WpotArQ9VtfVCCovGlIRRoSAFRsWmX9Kv4UaNSJEiqHZqD9/va7goQ==",
-      "path": "csrediscore/3.0.51",
-      "hashPath": "csrediscore.3.0.51.nupkg.sha512"
+      "sha512": "sha512-YQHhsZfbOQ55croTCE8PuyecdOe5PZ7gmz9i/viMyrE+wYnTPq2qOjXWcE4Rf+rLaPXXSgeBP3zAydsIH7b9OA==",
+      "path": "csrediscore/3.1.5",
+      "hashPath": "csrediscore.3.1.5.nupkg.sha512"
     },
-    "FreeSql.DbContext/0.8.4": {
+    "FreeSql/0.8.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-a5Io5qUY8r1nrf6TefZqVjz5fZvitxj2nGxiucivQw9dkX8CcfkeBTMeanlPW/phN+FKpESLihsN3GeNP/zXvw==",
-      "path": "freesql.dbcontext/0.8.4",
-      "hashPath": "freesql.dbcontext.0.8.4.nupkg.sha512"
+      "sha512": "sha512-aThBkN4JR1l9YbmAsiRPBWg3sxm5Qpi+gx+1EGD/iVRXcqH6ulS/uo5FAKTO8+dJan8dae0ayw37YdbXbd3x/w==",
+      "path": "freesql/0.8.5",
+      "hashPath": "freesql.0.8.5.nupkg.sha512"
     },
-    "FreeSql.Provider.MySql/0.8.4": {
+    "FreeSql.DbContext/0.8.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-tu5fqB+pqPsmQc6/pYKSRTbIpq5MJ9VFeeGGn+bSyDHclTbnqZXdWdJqm8f8Y6oV7WhOXQvLLDGsBok+j+QGvQ==",
-      "path": "freesql.provider.mysql/0.8.4",
-      "hashPath": "freesql.provider.mysql.0.8.4.nupkg.sha512"
+      "sha512": "sha512-Tp8kPKd+Aw1ELT9NZ/ZgxpvAh0nPmiBRIjQuY13p5Y50aOtYHJ9/d4B3DuTRsydgfeEN8rZBNTQtzCVtKdYhyw==",
+      "path": "freesql.dbcontext/0.8.5",
+      "hashPath": "freesql.dbcontext.0.8.5.nupkg.sha512"
     },
-    "Google.Protobuf/3.6.1": {
+    "FreeSql.Provider.Sqlite/0.8.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-D/h9IZl76jjfM5VlPzG235Zdys9RKXNLYbRGm2fa6Y2UshTqAvYBPIydNOvNTEa24DER/m/zvelHlLO9n1GtNQ==",
-      "path": "google.protobuf/3.6.1",
-      "hashPath": "google.protobuf.3.6.1.nupkg.sha512"
+      "sha512": "sha512-f8rMt+r7mSZiWDFSfA85ZMUMuiKYxItyNODfe+Vo7iK44b7gzPVus9S+/5fBXHB/adOMIPWP4XETfhLjjUt5Ig==",
+      "path": "freesql.provider.sqlite/0.8.5",
+      "hashPath": "freesql.provider.sqlite.0.8.5.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.1.1": {
       "type": "package",
@@ -2790,13 +2719,6 @@
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
     },
-    "MySql.Data/8.0.16": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-PQC4+MznUsZoUJq3CJ+NLJ8ilSOYlBjoIxVsLbyu95G93ZarB+8sUQHM5urHM6LxpKtAZ3+SFasTz8VcPjhDmA==",
-      "path": "mysql.data/8.0.16",
-      "hashPath": "mysql.data.8.0.16.nupkg.sha512"
-    },
     "NETStandard.Library/2.0.3": {
       "type": "package",
       "serviceable": true,
@@ -3034,13 +2956,6 @@
       "sha512": "sha512-IjDa643EO77A4CL9dhxfZ6zzGu+pM8Ar0NYPRMN3TvDiga4uGDzFHOj/ArpyNxxKyO5IFT2LZ0rK3kUog7g3jA==",
       "path": "system.componentmodel.annotations/4.5.0",
       "hashPath": "system.componentmodel.annotations.4.5.0.nupkg.sha512"
-    },
-    "System.Configuration.ConfigurationManager/4.4.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-LoSjM/kLDpyLyoGsmwS5oVMRzHf/0XHkRpr3QZu/HuAv6Sfk919usTMLqD9N9VK3S4Q2+bd3tKJ0ko4MYFfq4Q==",
-      "path": "system.configuration.configurationmanager/4.4.1",
-      "hashPath": "system.configuration.configurationmanager.4.4.1.nupkg.sha512"
     },
     "System.Console/4.3.0": {
       "type": "package",
@@ -3357,13 +3272,6 @@
       "path": "system.security.cryptography.primitives/4.3.0",
       "hashPath": "system.security.cryptography.primitives.4.3.0.nupkg.sha512"
     },
-    "System.Security.Cryptography.ProtectedData/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-WwEexvBd+17yfY7fcS+fBGl+HADEfCJuKeDJqBT7D6j6vKwYvfLyGuq2y/MmrKORC6mbYwth7kjinO1mPhTL3g==",
-      "path": "system.security.cryptography.protecteddata/4.4.0",
-      "hashPath": "system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
-    },
     "System.Security.Cryptography.X509Certificates/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -3505,16 +3413,6 @@
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
     "Domain/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "FreeSql/0.8.4": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "FreeSql.Provider.Sqlite/0.8.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
