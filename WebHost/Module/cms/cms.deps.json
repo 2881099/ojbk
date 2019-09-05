@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "a37a836dd1513d753a3befe92af43ad23a0dd997"
+    "signature": "5e3aba2be35425b69dc8c60d53bf391beec1acad"
   },
   "compilationOptions": {},
   "targets": {
@@ -41,39 +41,39 @@
           }
         }
       },
-      "FreeSql/0.8.5": {
+      "FreeSql/0.9.4": {
         "dependencies": {
           "SafeObjectPool": "2.1.1",
           "System.ValueTuple": "4.5.0"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.dll": {
-            "assemblyVersion": "0.8.5.0",
-            "fileVersion": "0.8.5.0"
+            "assemblyVersion": "0.9.4.0",
+            "fileVersion": "0.9.4.0"
           }
         }
       },
-      "FreeSql.DbContext/0.8.5": {
+      "FreeSql.DbContext/0.9.4": {
         "dependencies": {
-          "FreeSql": "0.8.5",
+          "FreeSql": "0.9.4",
           "Microsoft.Extensions.DependencyInjection": "2.1.1"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.DbContext.dll": {
-            "assemblyVersion": "0.8.5.0",
-            "fileVersion": "0.8.5.0"
+            "assemblyVersion": "0.9.4.0",
+            "fileVersion": "0.9.4.0"
           }
         }
       },
-      "FreeSql.Provider.Sqlite/0.8.5": {
+      "FreeSql.Provider.Sqlite/0.9.4": {
         "dependencies": {
-          "FreeSql": "0.8.5",
+          "FreeSql": "0.9.4",
           "System.Data.SQLite.Core": "1.0.110"
         },
         "runtime": {
           "lib/netstandard2.0/FreeSql.Provider.Sqlite.dll": {
-            "assemblyVersion": "0.8.5.0",
-            "fileVersion": "0.8.5.0"
+            "assemblyVersion": "0.9.4.0",
+            "fileVersion": "0.9.4.0"
           }
         }
       },
@@ -2101,8 +2101,8 @@
       "Domain/1.0.0": {
         "dependencies": {
           "CSRedisCore": "3.1.5",
-          "FreeSql.DbContext": "0.8.5",
-          "FreeSql.Provider.Sqlite": "0.8.5",
+          "FreeSql.DbContext": "0.9.4",
+          "FreeSql.Provider.Sqlite": "0.9.4",
           "Newtonsoft.Json": "12.0.2"
         },
         "runtime": {
@@ -2152,26 +2152,26 @@
       "path": "csrediscore/3.1.5",
       "hashPath": "csrediscore.3.1.5.nupkg.sha512"
     },
-    "FreeSql/0.8.5": {
+    "FreeSql/0.9.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aThBkN4JR1l9YbmAsiRPBWg3sxm5Qpi+gx+1EGD/iVRXcqH6ulS/uo5FAKTO8+dJan8dae0ayw37YdbXbd3x/w==",
-      "path": "freesql/0.8.5",
-      "hashPath": "freesql.0.8.5.nupkg.sha512"
+      "sha512": "sha512-sjbL9vvS+Cs1NFWIeRZlFJ96W5QulN+fJHK4vuvS6w18bhCnLSG+5YIXymbjgPvE9mbQGyoFEb6kdO2G3oExjA==",
+      "path": "freesql/0.9.4",
+      "hashPath": "freesql.0.9.4.nupkg.sha512"
     },
-    "FreeSql.DbContext/0.8.5": {
+    "FreeSql.DbContext/0.9.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Tp8kPKd+Aw1ELT9NZ/ZgxpvAh0nPmiBRIjQuY13p5Y50aOtYHJ9/d4B3DuTRsydgfeEN8rZBNTQtzCVtKdYhyw==",
-      "path": "freesql.dbcontext/0.8.5",
-      "hashPath": "freesql.dbcontext.0.8.5.nupkg.sha512"
+      "sha512": "sha512-dlNR8lpNNCP8CE0GM7A6Qe0K073t4UqdBCRMjow2itT6GTeqMXBa60m6Khynq3MBghBhNfGWDXjP+HhBsKDLKg==",
+      "path": "freesql.dbcontext/0.9.4",
+      "hashPath": "freesql.dbcontext.0.9.4.nupkg.sha512"
     },
-    "FreeSql.Provider.Sqlite/0.8.5": {
+    "FreeSql.Provider.Sqlite/0.9.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-f8rMt+r7mSZiWDFSfA85ZMUMuiKYxItyNODfe+Vo7iK44b7gzPVus9S+/5fBXHB/adOMIPWP4XETfhLjjUt5Ig==",
-      "path": "freesql.provider.sqlite/0.8.5",
-      "hashPath": "freesql.provider.sqlite.0.8.5.nupkg.sha512"
+      "sha512": "sha512-wwTdeWeBhuui340kbwXwFlgeejzPl+/9sQg1/N71AJPwcqlKb3QqGM/LpVVq8v9GBV9UYCwhWUlEW0Dw/WlEpA==",
+      "path": "freesql.provider.sqlite/0.9.4",
+      "hashPath": "freesql.provider.sqlite.0.9.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.1.1": {
       "type": "package",

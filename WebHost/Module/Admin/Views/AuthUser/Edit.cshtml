@@ -1,0 +1,116 @@
+@{
+	Layout = "";
+	AuthUser item = ViewBag.item;
+	var mn_Roles = fsql.Select<AuthRole>().ToList();
+	var fk_Persons = fsql.Select<OrgPerson>().ToList();
+}
+
+<div class="box">
+	<div class="box-header with-border">
+		<h3 class="box-title" id="box-title"></h3>
+	</div>
+	<div class="box-body">
+		<div class="table-responsive">
+			<form id="form_add" method="post">
+				@Html.AntiForgeryToken()
+				<input type="hidden" name="__callback" value="edit_callback" />
+				<div>
+					<table cellspacing="0" rules="all" class="table table-bordered table-hover" border="1" style="border-collapse:collapse;">
+						@if (item != null) {
+							<tr>
+								<td>主键(自增)</td>
+								<td><input name="Id" type="text" readonly class="datepicker" style="width:20%;background-color:#ddd;" /></td>
+							</tr>
+						}
+						<tr>
+							<td>员工id</td>
+							<td>
+                                <select name="PersonId">
+									<option value="">------ 请选择 ------</option>
+									@foreach (var fk in fk_Persons) { <option value="@fk.Id">@fk.FullName</option> }
+								</select>
+                            </td>
+					    </tr>
+					    <tr>
+							<td>用户名</td>
+							<td><input name="Username" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>密码</td>
+							<td><input name="Password" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>最后登录时间</td>
+							<td><input name="LoginTime" type="text" class="datepicker" /></td>
+						</tr>
+					    <tr>
+							<td>最后登录IP</td>
+							<td><input name="LoginIp" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>状态</td>
+							<td>
+                                <select name="Status"><option value="">------ 请选择 ------</option>
+									@foreach (object eo in Enum.GetValues(typeof(ojbk.Entities.AuthUserStatus))) { <option value="@eo">@eo</option> }
+								</select>
+                            </td>
+						</tr>
+					    <tr>
+							<td>是否为系统管理员</td>
+							<td id="IsAdmin_td"><input name="IsAdmin" type="checkbox" value="true" /></td>
+						</tr>
+					    <tr>
+							<td>创建时间</td>
+							<td><input name="CreateTime" type="text" class="datepicker" /></td>
+						</tr>
+					    <tr>
+							<td>更新时间</td>
+							<td><input name="UpdateTime" type="text" class="datepicker" /></td>
+						</tr>
+					    <tr>
+							<td>逻辑删除</td>
+							<td id="IsDeleted_td"><input name="IsDeleted" type="checkbox" value="true" /></td>
+						</tr>
+					    <tr>
+							<td>排序</td>
+							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
+						</tr>
+						<tr>
+							<td>Roles</td>
+							<td>
+								<select name="mn_Roles_Id" data-placeholder="Select a AuthRole" class="form-control select2" multiple>
+									@foreach (var mn in mn_Roles) { <option value="@mn.Id">@mn.Name</option> }
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="8%">&nbsp</td>
+							<td><input type="submit" value="@(item == null ? "添加" : "更新")" />&nbsp;<input type="button" value="取消" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	(function () {
+		top.edit_callback = function (rt) {
+			if (rt.code == 0) return top.mainViewNav.goto('./?' + new Date().getTime());
+			alert(rt.message);
+		};
+
+		var form = $('#form_add')[0];
+		var item = null;
+		@if (item != null) {
+			<text>
+			item = @Html.Json(item);
+			fillForm(form, item);item.mn_Roles = @Html.Json(item.Roles);
+			for (var a = 0; a < item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');
+			</text>
+		}
+		top.mainViewInit();
+	})();
+</script>

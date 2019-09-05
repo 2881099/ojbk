@@ -58,6 +58,7 @@ namespace WebHost
         {
             //下面这行代码依赖redis-server，注释后系统将以memory作为缓存存储的介质
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
+            services.AddSingleton<IFreeSql>(BaseEntity.Orm);
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IHostingEnvironment>(Env);
             services.AddScoped<CustomExceptionFilter>();
