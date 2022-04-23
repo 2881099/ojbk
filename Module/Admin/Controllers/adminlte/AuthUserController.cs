@@ -14,7 +14,7 @@ using ojbk.Entities;
 
 namespace FreeSql.AdminLTE.Controllers
 {
-    [Route("/adminlte/[controller]")]
+    [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class AuthUserController : Controller
     {
         IFreeSql fsql;
@@ -51,9 +51,13 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("add")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Add([FromForm] int PersonId, [FromForm] string Username, [FromForm] string Password, [FromForm] DateTime LoginTime, [FromForm] string LoginIp, [FromForm] AuthUserStatus Status, [FromForm] bool IsAdmin, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Roles_Id)
+        async public Task<ApiResult> _Add([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int PersonId, [FromForm] string Username, [FromForm] string Password, [FromForm] DateTime LoginTime, [FromForm] string LoginIp, [FromForm] AuthUserStatus Status, [FromForm] bool IsAdmin, [FromForm] int[] mn_Roles_Id)
         {
             var item = new AuthUser();
+            item.CreateTime = CreateTime;
+            item.UpdateTime = UpdateTime;
+            item.IsDeleted = IsDeleted;
+            item.Sort = Sort;
             item.PersonId = PersonId;
             item.Username = Username;
             item.Password = Password;
@@ -61,16 +65,11 @@ namespace FreeSql.AdminLTE.Controllers
             item.LoginIp = LoginIp;
             item.Status = Status;
             item.IsAdmin = IsAdmin;
-            item.CreateTime = CreateTime;
-            item.UpdateTime = UpdateTime;
-            item.IsDeleted = IsDeleted;
-            item.Sort = Sort;
             using (var ctx = fsql.CreateDbContext())
             {
                 await ctx.AddAsync(item);
                 //关联 AuthRole
-                var mn_Roles = mn_Roles_Id.Select((mn, idx) => new AuthRole.AuthRoleUser { RoleId = mn, UserId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_Roles);
+                await ctx.SaveManyAsync(item, "Roles");
                 await ctx.SaveChangesAsync();
             }
             return ApiResult<object>.Success.SetData(item);
@@ -78,13 +77,18 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("edit")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Edit([FromForm] int PersonId, [FromForm] string Username, [FromForm] string Password, [FromForm] DateTime LoginTime, [FromForm] string LoginIp, [FromForm] AuthUserStatus Status, [FromForm] bool IsAdmin, [FromForm] int Id, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Roles_Id)
+        async public Task<ApiResult> _Edit([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int Id, [FromForm] int PersonId, [FromForm] string Username, [FromForm] string Password, [FromForm] DateTime LoginTime, [FromForm] string LoginIp, [FromForm] AuthUserStatus Status, [FromForm] bool IsAdmin, [FromForm] int[] mn_Roles_Id)
         {
-            var item = new AuthUser();
-            item.Id = Id;
+            //var item = new AuthUser();
+            //item.Id = Id;
             using (var ctx = fsql.CreateDbContext())
             {
-                ctx.Attach(item);
+                //ctx.Attach(item);
+                var item = await ctx.Set<AuthUser>().Where(a => a.Id == Id).FirstAsync();
+                item.CreateTime = CreateTime;
+                item.UpdateTime = UpdateTime;
+                item.IsDeleted = IsDeleted;
+                item.Sort = Sort;
                 item.PersonId = PersonId;
                 item.Username = Username;
                 item.Password = Password;
@@ -92,25 +96,9 @@ namespace FreeSql.AdminLTE.Controllers
                 item.LoginIp = LoginIp;
                 item.Status = Status;
                 item.IsAdmin = IsAdmin;
-                item.CreateTime = CreateTime;
-                item.UpdateTime = UpdateTime;
-                item.IsDeleted = IsDeleted;
-                item.Sort = Sort;
                 await ctx.UpdateAsync(item);
                 //关联 AuthRole
-                if (mn_Roles_Id != null)
-                {
-                    var mn_Roles_Id_list = mn_Roles_Id.ToList();
-                    var oldlist = ctx.Set<AuthRole.AuthRoleUser>().Where(a => a.UserId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_Roles_Id_list.FindIndex(a => a == olditem.RoleId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_Roles_Id_list.RemoveAt(idx);
-                    }
-                    var mn_Roles = mn_Roles_Id_list.Select((mn, idx) => new AuthRole.AuthRoleUser { RoleId = mn, UserId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_Roles);
-                }
+                await ctx.SaveManyAsync(item, "Roles");
                 var affrows = await ctx.SaveChangesAsync();
                 if (affrows > 0) return ApiResult.Success.SetMessage($"更新成功，影响行数：{affrows}");
             }

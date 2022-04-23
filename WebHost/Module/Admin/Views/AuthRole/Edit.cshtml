@@ -24,18 +24,6 @@
 							</tr>
 						}
 					    <tr>
-							<td>名称</td>
-							<td><input name="Name" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>备注</td>
-							<td><input name="Remark" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>TenantId</td>
-							<td><input name="TenantId" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
 							<td>创建时间</td>
 							<td><input name="CreateTime" type="text" class="datepicker" /></td>
 						</tr>
@@ -50,6 +38,18 @@
 					    <tr>
 							<td>排序</td>
 							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
+						</tr>
+					    <tr>
+							<td>名称</td>
+							<td><input name="Name" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>备注</td>
+							<td><input name="Remark" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>TenantId</td>
+							<td><input name="TenantId" type="text" class="datepicker" style="width:60%;" /></td>
 						</tr>
 						<tr>
 							<td>AdmRoutes</td>
@@ -100,11 +100,12 @@
 			<text>
 			item = @Html.Json(item);
 			fillForm(form, item);item.mn_AdmRoutes = @Html.Json(item.AdmRoutes);
-			for (var a = 0; a < item.mn_AdmRoutes.length; a++) $(form.mn_AdmRoutes_Id).find('option[value="{0}"]'.format(item.mn_AdmRoutes[a].Id)).attr('selected', 'selected');item.mn_Users = @Html.Json(item.Users);
-			for (var a = 0; a < item.mn_Users.length; a++) $(form.mn_Users_Id).find('option[value="{0}"]'.format(item.mn_Users[a].Id)).attr('selected', 'selected');item.mn_OrgPosts = @Html.Json(item.OrgPosts);
-			for (var a = 0; a < item.mn_OrgPosts.length; a++) $(form.mn_OrgPosts_Id).find('option[value="{0}"]'.format(item.mn_OrgPosts[a].Id)).attr('selected', 'selected');
+			for (var a = 0; a @Html.Raw('<') item.mn_AdmRoutes.length; a++) $(form.mn_AdmRoutes_Id).find('option[value="{0}"]'.format(item.mn_AdmRoutes[a].Id)).attr('selected', 'selected');item.mn_Users = @Html.Json(item.Users);
+			for (var a = 0; a @Html.Raw('<') item.mn_Users.length; a++) $(form.mn_Users_Id).find('option[value="{0}"]'.format(item.mn_Users[a].Id)).attr('selected', 'selected');item.mn_OrgPosts = @Html.Json(item.OrgPosts);
+			for (var a = 0; a @Html.Raw('<') item.mn_OrgPosts.length; a++) $(form.mn_OrgPosts_Id).find('option[value="{0}"]'.format(item.mn_OrgPosts[a].Id)).attr('selected', 'selected');
 			</text>
 		}
+
 		top.mainViewInit();
 	})();
 </script>

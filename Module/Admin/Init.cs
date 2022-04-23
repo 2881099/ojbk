@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ojbk.Entities;
 
@@ -8,18 +9,12 @@ namespace Module.Admin
 {
     public class Init : IModuleInitializer
     {
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IHostApplicationLifetime lifetime)
         {
-            FreeSql.BaseEntity.Orm.CodeFirst.GetTableByEntity(typeof(ojbk.Entities.AdmRoute));
 
-
-            FreeSql.BaseEntity.CurrentTenantId = "1";
-            var testsql = new AuthUser().SelectAdmRoute.ToSql();
-
-            var testlist = new AuthUser().SelectAdmRoute.ToList();
         }
 
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
         {
 
         }

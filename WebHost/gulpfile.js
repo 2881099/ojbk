@@ -12,33 +12,35 @@ var paths = {
 
 var modules = loadModules();
 
-gulp.task('clean-module', function () {
+gulp.task('clean-module', gulp.series(function () {
     return gulp.src([paths.hostModule + '*', paths.hostWwwrootModules + '*'], { read: false })
     .pipe(clean());
-});
+}));
 
-gulp.task('copy-module', ['clean-module'], function () {
+gulp.task('copy-module', gulp.series('clean-module', function (cb) {
 	modules.forEach(function (module) {
 		console.log(paths.devModule + module.fullName + '/Views/**/*.*');
         gulp.src([paths.devModule + module.fullName + '/Views/**/*.*'], { base: module.fullName })
 			.pipe(gulp.dest(paths.hostModule + module.fullName));
-		gulp.src(paths.devModule + module.fullName + '/bin/Debug/netstandard2.0/**/' + module.fullName + '.*')
+        gulp.src(paths.devModule + module.fullName + '/bin/Debug/net6.0/**/' + module.fullName + '.*')
             .pipe(gulp.dest(paths.hostModule + module.fullName));
         gulp.src(paths.devModule + module.fullName + '/appsettings.json')
             .pipe(gulp.dest(paths.hostModule + module.fullName));
         gulp.src(paths.devModule + module.fullName + '/wwwroot/**/*.*')
             .pipe(gulp.dest(paths.hostWwwrootModules + module.name));
     });
-});
+    cb();
+}));
 
-gulp.task('copy-static', function () {
+gulp.task('copy-static', gulp.series(function (cb) {
     modules.forEach(function (module) {
         gulp.src([paths.devModule + module.fullName + '/Views/**/*.*'], { base: module.fullName })
             .pipe(gulp.dest(paths.hostModule + module.fullName));
         gulp.src(paths.devModule + module.fullName + '/wwwroot/**/*.*')
             .pipe(gulp.dest(paths.hostWwwrootModules + module.name));
     });
-});
+    cb();
+}));
 
 function loadModules() {
 	var moduleManifestPaths,

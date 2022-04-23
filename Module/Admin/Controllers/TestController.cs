@@ -3,10 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Module.Admin.Controllers
 {
-    [Route("api/module/admin/[controller]")]
+    [Route("api/module/admin/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class TestController : BaseController
     {
-        public TestController(ILogger<TestController> logger) : base(logger) { }
 
         [HttpGet]
         public ApiResult List()

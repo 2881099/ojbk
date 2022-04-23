@@ -20,13 +20,13 @@
 						<th scope="col" style="width:2%;"><input type="checkbox" onclick="$('#GridView1 tbody tr').each(function (idx, el) { var chk = $(el).find('td:first input[type=\'checkbox\']')[0]; if (chk) chk.checked = !chk.checked; });" /></th>
 
 						<th scope="col">主键(自增)</th>
-						<th scope="col">名称</th>
-						<th scope="col">备注</th>
-						<th scope="col">TenantId</th>
 						<th scope="col">创建时间</th>
 						<th scope="col">更新时间</th>
 						<th scope="col">逻辑删除</th>
 						<th scope="col">排序</th>
+						<th scope="col">名称</th>
+						<th scope="col">备注</th>
+						<th scope="col">TenantId</th>
 						<th scope="col" style="width:5%;">&nbsp;</th>
 					</tr>
 					<tbody>
@@ -35,13 +35,13 @@
 
 								<td><input type="checkbox" id="id" name="id" value="@item.Id" /></td>
 								<td>@item.Id</td>
-								<td>@item.Name</td>
-								<td>@item.Remark</td>
-								<td>@item.TenantId</td>
 								<td>@item.CreateTime</td>
 								<td>@item.UpdateTime</td>
 								<td>@item.IsDeleted</td>
 								<td>@item.Sort</td>
+								<td>@item.Name</td>
+								<td>@item.Remark</td>
+								<td>@item.TenantId</td>
 								<td><a href="./edit?Id=@item.Id">修改</a></td>
                             </tr>
 						}
@@ -73,9 +73,9 @@
 		var fqs = _clone(top.mainViewNav.query);
 		delete fqs.page;
 		var fsc = [
-			{ name: 'AdmRoutes', field: 'mn_AdmRoutes_Id', text: @Html.Json(mn_AdmRoutes.Select(a => a.Name)), value: @Html.Json(mn_AdmRoutes.Select(a => a.Id)) },
-			{ name: 'Users', field: 'mn_Users_Id', text: @Html.Json(mn_Users.Select(a => a.Username)), value: @Html.Json(mn_Users.Select(a => a.Id)) },
-			{ name: 'OrgPosts', field: 'mn_OrgPosts_Id', text: @Html.Json(mn_OrgPosts.Select(a => a.Title)), value: @Html.Json(mn_OrgPosts.Select(a => a.Id)) },
+			{ name: '后台路由，一级=菜单', field: 'mn_AdmRoutes_Id', text: @Html.Json(mn_AdmRoutes.Select(a => a.Name)), value: @Html.Json(mn_AdmRoutes.Select(a => a.Id)) },
+			{ name: '登陆账户', field: 'mn_Users_Id', text: @Html.Json(mn_Users.Select(a => a.Username)), value: @Html.Json(mn_Users.Select(a => a.Id)) },
+			{ name: '岗位', field: 'mn_OrgPosts_Id', text: @Html.Json(mn_OrgPosts.Select(a => a.Title)), value: @Html.Json(mn_OrgPosts.Select(a => a.Id)) },
 			null
 		];
 		fsc.pop();

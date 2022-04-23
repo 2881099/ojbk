@@ -33,18 +33,6 @@
                             </td>
 					    </tr>
 					    <tr>
-							<td>岗位称呼</td>
-							<td><input name="Title" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>职责内容</td>
-							<td><input name="DutyContent" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>工作内容</td>
-							<td><input name="JobContent" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
 							<td>创建时间</td>
 							<td><input name="CreateTime" type="text" class="datepicker" /></td>
 						</tr>
@@ -59,6 +47,18 @@
 					    <tr>
 							<td>排序</td>
 							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
+						</tr>
+					    <tr>
+							<td>岗位称呼</td>
+							<td><input name="Title" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>职责内容</td>
+							<td><input name="DutyContent" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>工作内容</td>
+							<td><input name="JobContent" type="text" class="datepicker" style="width:60%;" /></td>
 						</tr>
 						<tr>
 							<td>Roles</td>
@@ -101,10 +101,11 @@
 			<text>
 			item = @Html.Json(item);
 			fillForm(form, item);item.mn_Roles = @Html.Json(item.Roles);
-			for (var a = 0; a < item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');item.mn_Persons = @Html.Json(item.Persons);
-			for (var a = 0; a < item.mn_Persons.length; a++) $(form.mn_Persons_Id).find('option[value="{0}"]'.format(item.mn_Persons[a].Id)).attr('selected', 'selected');
+			for (var a = 0; a @Html.Raw('<') item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');item.mn_Persons = @Html.Json(item.Persons);
+			for (var a = 0; a @Html.Raw('<') item.mn_Persons.length; a++) $(form.mn_Persons_Id).find('option[value="{0}"]'.format(item.mn_Persons[a].Id)).attr('selected', 'selected');
 			</text>
 		}
+
 		top.mainViewInit();
 	})();
 </script>

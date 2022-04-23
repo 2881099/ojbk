@@ -1,11 +1,10 @@
 ﻿using FreeSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace WebHost
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var orm = new FreeSqlBuilder()
                 .UseAutoSyncStructure(true)
@@ -27,8 +26,12 @@ namespace WebHost
                 //.UseConnectionString(FreeSql.DataType.SqlServer, "Data Source=.;Integrated Security=True;Initial Catalog=freesqlTest;Pooling=true;Max Pool Size=2")
                 //.UseConnectionString(FreeSql.DataType.Oracle, "user id=user1;password=123456;data source=//127.0.0.1:1521/XE;Pooling=true;Max Pool Size=2")
                 .Build();
-            orm.Aop.CurdBefore += (s, e) => Console.WriteLine(e.Sql + "\r\n");
-            BaseEntity.Initialization(orm);
+            orm.Aop.CurdBefore += (s, e) =>
+            {
+                Trace.WriteLine("[" + BaseController.CurrentControllerContext.Value?.ActionDescriptor.ControllerName + "/" +
+                    BaseController.CurrentControllerContext.Value?.ActionDescriptor.ActionName + "]: " + e.Sql + "\r\n");
+            };
+            BaseEntity.Initialization(orm, null);
 
             var builder = new ConfigurationBuilder()
                 .LoadInstalledModules(Modules, env)
@@ -52,7 +55,7 @@ namespace WebHost
 
         public static List<ModuleInfo> Modules = new List<ModuleInfo>();
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Env { get; }
+        public IWebHostEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -60,7 +63,7 @@ namespace WebHost
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
             services.AddSingleton<IFreeSql>(BaseEntity.Orm);
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IHostingEnvironment>(Env);
+            services.AddSingleton<IWebHostEnvironment>(Env);
             services.AddScoped<CustomExceptionFilter>();
 
             services.AddSession(a =>
@@ -76,22 +79,26 @@ namespace WebHost
                 services.AddCustomizedSwaggerGen();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Console.OutputEncoding = Encoding.GetEncoding("GB2312");
             Console.InputEncoding = Encoding.GetEncoding("GB2312");
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddNLog().AddDebug();
             NLog.LogManager.LoadConfiguration("nlog.config");
 
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             app.UseSession();
+            app.UseRouting();
             app.UseCors("cors_all");
-            app.UseMvc();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             app.UseCustomizedStaticFiles(Modules);
             Modules.ForEach(module => module.Initializer?.Configure(app, env, loggerFactory, lifetime));
 

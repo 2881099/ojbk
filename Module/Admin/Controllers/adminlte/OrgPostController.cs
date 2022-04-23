@@ -14,7 +14,7 @@ using ojbk.Entities;
 
 namespace FreeSql.AdminLTE.Controllers
 {
-    [Route("/adminlte/[controller]")]
+    [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class OrgPostController : Controller
     {
         IFreeSql fsql;
@@ -26,7 +26,7 @@ namespace FreeSql.AdminLTE.Controllers
         async public Task<ActionResult> List([FromQuery] string key, [FromQuery] int[] Department_Id, [FromQuery] int[] mn_Roles_Id, [FromQuery] int[] mn_Persons_Id, [FromQuery] int limit = 20, [FromQuery] int page = 1)
         {
             var select = fsql.Select<OrgPost>().Include(a => a.Department)
-                .WhereIf(!string.IsNullOrEmpty(key), a => a.Title.Contains(key) || a.DutyContent.Contains(key) || a.JobContent.Contains(key) || a.Department.Name.Contains(key) || a.Department.FullName.Contains(key))
+                .WhereIf(!string.IsNullOrEmpty(key), a => a.Title.Contains(key) || a.DutyContent.Contains(key) || a.JobContent.Contains(key) || a.Department.Name.Contains(key))
                 .WhereIf(Department_Id?.Any() == true, a => Department_Id.Contains(a.DepartmentId))
                 .WhereIf(mn_Roles_Id?.Any() == true, a => a.Roles.AsSelect().Any(b => mn_Roles_Id.Contains(b.Id)))
                 .WhereIf(mn_Persons_Id?.Any() == true, a => a.Persons.AsSelect().Any(b => mn_Persons_Id.Contains(b.Id)));
@@ -52,26 +52,24 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("add")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Add([FromForm] int DepartmentId, [FromForm] string Title, [FromForm] string DutyContent, [FromForm] string JobContent, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Roles_Id, [FromForm] int[] mn_Persons_Id)
+        async public Task<ApiResult> _Add([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int DepartmentId, [FromForm] string Title, [FromForm] string DutyContent, [FromForm] string JobContent, [FromForm] int[] mn_Roles_Id, [FromForm] int[] mn_Persons_Id)
         {
             var item = new OrgPost();
-            item.DepartmentId = DepartmentId;
-            item.Title = Title;
-            item.DutyContent = DutyContent;
-            item.JobContent = JobContent;
             item.CreateTime = CreateTime;
             item.UpdateTime = UpdateTime;
             item.IsDeleted = IsDeleted;
             item.Sort = Sort;
+            item.DepartmentId = DepartmentId;
+            item.Title = Title;
+            item.DutyContent = DutyContent;
+            item.JobContent = JobContent;
             using (var ctx = fsql.CreateDbContext())
             {
                 await ctx.AddAsync(item);
                 //关联 AuthRole
-                var mn_Roles = mn_Roles_Id.Select((mn, idx) => new AuthRole.AuthRolePost { RoleId = mn, OrgPostId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_Roles);
+                await ctx.SaveManyAsync(item, "Roles");
                 //关联 OrgPerson
-                var mn_Persons = mn_Persons_Id.Select((mn, idx) => new OrgPost.OrgPostPerson { PersonId = mn, PostId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_Persons);
+                await ctx.SaveManyAsync(item, "Persons");
                 await ctx.SaveChangesAsync();
             }
             return ApiResult<object>.Success.SetData(item);
@@ -79,50 +77,27 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("edit")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Edit([FromForm] int DepartmentId, [FromForm] string Title, [FromForm] string DutyContent, [FromForm] string JobContent, [FromForm] int Id, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Roles_Id, [FromForm] int[] mn_Persons_Id)
+        async public Task<ApiResult> _Edit([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int Id, [FromForm] int DepartmentId, [FromForm] string Title, [FromForm] string DutyContent, [FromForm] string JobContent, [FromForm] int[] mn_Roles_Id, [FromForm] int[] mn_Persons_Id)
         {
-            var item = new OrgPost();
-            item.Id = Id;
+            //var item = new OrgPost();
+            //item.Id = Id;
             using (var ctx = fsql.CreateDbContext())
             {
-                ctx.Attach(item);
-                item.DepartmentId = DepartmentId;
-                item.Title = Title;
-                item.DutyContent = DutyContent;
-                item.JobContent = JobContent;
+                //ctx.Attach(item);
+                var item = await ctx.Set<OrgPost>().Where(a => a.Id == Id).FirstAsync();
                 item.CreateTime = CreateTime;
                 item.UpdateTime = UpdateTime;
                 item.IsDeleted = IsDeleted;
                 item.Sort = Sort;
+                item.DepartmentId = DepartmentId;
+                item.Title = Title;
+                item.DutyContent = DutyContent;
+                item.JobContent = JobContent;
                 await ctx.UpdateAsync(item);
                 //关联 AuthRole
-                if (mn_Roles_Id != null)
-                {
-                    var mn_Roles_Id_list = mn_Roles_Id.ToList();
-                    var oldlist = ctx.Set<AuthRole.AuthRolePost>().Where(a => a.OrgPostId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_Roles_Id_list.FindIndex(a => a == olditem.RoleId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_Roles_Id_list.RemoveAt(idx);
-                    }
-                    var mn_Roles = mn_Roles_Id_list.Select((mn, idx) => new AuthRole.AuthRolePost { RoleId = mn, OrgPostId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_Roles);
-                }
+                await ctx.SaveManyAsync(item, "Roles");
                 //关联 OrgPerson
-                if (mn_Persons_Id != null)
-                {
-                    var mn_Persons_Id_list = mn_Persons_Id.ToList();
-                    var oldlist = ctx.Set<OrgPost.OrgPostPerson>().Where(a => a.PostId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_Persons_Id_list.FindIndex(a => a == olditem.PersonId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_Persons_Id_list.RemoveAt(idx);
-                    }
-                    var mn_Persons = mn_Persons_Id_list.Select((mn, idx) => new OrgPost.OrgPostPerson { PersonId = mn, PostId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_Persons);
-                }
+                await ctx.SaveManyAsync(item, "Persons");
                 var affrows = await ctx.SaveChangesAsync();
                 if (affrows > 0) return ApiResult.Success.SetMessage($"更新成功，影响行数：{affrows}");
             }

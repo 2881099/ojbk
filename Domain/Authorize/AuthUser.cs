@@ -7,6 +7,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 登陆账户
     /// </summary>
+    [Index("uk_authuser_username", "Username")]
     public partial class AuthUser : BaseEntity<AuthUser, int>
     {
         static AuthUser()
@@ -59,7 +60,6 @@ namespace ojbk.Entities
         /// <summary>
         /// 用户名
         /// </summary>
-        [Column(Unique = "uk_authuser_username")]
         public string Username { get; set; }
 
         /// <summary>

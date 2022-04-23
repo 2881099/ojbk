@@ -14,7 +14,7 @@ using ojbk.Entities;
 
 namespace FreeSql.AdminLTE.Controllers
 {
-    [Route("/adminlte/[controller]")]
+    [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class OrgDepartmentController : Controller
     {
         IFreeSql fsql;
@@ -26,7 +26,7 @@ namespace FreeSql.AdminLTE.Controllers
         async public Task<ActionResult> List([FromQuery] string key, [FromQuery] int[] Parent_Id, [FromQuery] int limit = 20, [FromQuery] int page = 1)
         {
             var select = fsql.Select<OrgDepartment>().Include(a => a.Parent)
-                .WhereIf(!string.IsNullOrEmpty(key), a => a.Name.Contains(key) || a.FullName.Contains(key) || a.Parent.Name.Contains(key) || a.Parent.FullName.Contains(key))
+                .WhereIf(!string.IsNullOrEmpty(key), a => a.Name.Contains(key) || a.Parent.Name.Contains(key))
                 .WhereIf(Parent_Id?.Any() == true, a => Parent_Id.Contains(a.ParentId));
             var items = await select.Count(out var count).Page(page, limit).ToListAsync();
             ViewBag.items = items;
@@ -50,16 +50,15 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("add")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Add([FromForm] int ParentId, [FromForm] string Name, [FromForm] string FullName, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort)
+        async public Task<ApiResult> _Add([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int ParentId, [FromForm] string Name)
         {
             var item = new OrgDepartment();
-            item.ParentId = ParentId;
-            item.Name = Name;
-            item.FullName = FullName;
             item.CreateTime = CreateTime;
             item.UpdateTime = UpdateTime;
             item.IsDeleted = IsDeleted;
             item.Sort = Sort;
+            item.ParentId = ParentId;
+            item.Name = Name;
             using (var ctx = fsql.CreateDbContext())
             {
                 await ctx.AddAsync(item);
@@ -70,20 +69,20 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("edit")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Edit([FromForm] int ParentId, [FromForm] string Name, [FromForm] string FullName, [FromForm] int Id, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort)
+        async public Task<ApiResult> _Edit([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int Id, [FromForm] int ParentId, [FromForm] string Name)
         {
-            var item = new OrgDepartment();
-            item.Id = Id;
+            //var item = new OrgDepartment();
+            //item.Id = Id;
             using (var ctx = fsql.CreateDbContext())
             {
-                ctx.Attach(item);
-                item.ParentId = ParentId;
-                item.Name = Name;
-                item.FullName = FullName;
+                //ctx.Attach(item);
+                var item = await ctx.Set<OrgDepartment>().Where(a => a.Id == Id).FirstAsync();
                 item.CreateTime = CreateTime;
                 item.UpdateTime = UpdateTime;
                 item.IsDeleted = IsDeleted;
                 item.Sort = Sort;
+                item.ParentId = ParentId;
+                item.Name = Name;
                 await ctx.UpdateAsync(item);
                 var affrows = await ctx.SaveChangesAsync();
                 if (affrows > 0) return ApiResult.Success.SetMessage($"更新成功，影响行数：{affrows}");

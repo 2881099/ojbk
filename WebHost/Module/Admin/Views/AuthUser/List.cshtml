@@ -21,16 +21,16 @@
 
 						<th scope="col">主键(自增)</th>
 						<th scope="col">员工id</th>
+						<th scope="col">创建时间</th>
+						<th scope="col">更新时间</th>
+						<th scope="col">逻辑删除</th>
+						<th scope="col">排序</th>
 						<th scope="col">用户名</th>
 						<th scope="col">密码</th>
 						<th scope="col">最后登录时间</th>
 						<th scope="col">最后登录IP</th>
 						<th scope="col">状态</th>
 						<th scope="col">是否为系统管理员</th>
-						<th scope="col">创建时间</th>
-						<th scope="col">更新时间</th>
-						<th scope="col">逻辑删除</th>
-						<th scope="col">排序</th>
 						<th scope="col" style="width:5%;">&nbsp;</th>
 					</tr>
 					<tbody>
@@ -40,16 +40,16 @@
 								<td><input type="checkbox" id="id" name="id" value="@item.Id" /></td>
 								<td>@item.Id</td>
 								<td>[@item.PersonId] @item.Person?.FullName</td>
+								<td>@item.CreateTime</td>
+								<td>@item.UpdateTime</td>
+								<td>@item.IsDeleted</td>
+								<td>@item.Sort</td>
 								<td>@item.Username</td>
 								<td>@item.Password</td>
 								<td>@item.LoginTime</td>
 								<td>@item.LoginIp</td>
 								<td>@item.Status</td>
 								<td>@item.IsAdmin</td>
-								<td>@item.CreateTime</td>
-								<td>@item.UpdateTime</td>
-								<td>@item.IsDeleted</td>
-								<td>@item.Sort</td>
 								<td><a href="./edit?Id=@item.Id">修改</a></td>
                             </tr>
 						}
@@ -80,8 +80,8 @@
 		var fqs = _clone(top.mainViewNav.query);
 		delete fqs.page;
 		var fsc = [
-			{ name: 'Roles', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
-			{ name: 'Person', field: 'PersonId', text: @Html.Json(fk_Persons.Select(a => a.FullName)), value: @Html.Json(fk_Persons.Select(a => a.Id)) },
+			{ name: '角色', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
+			{ name: '员工', field: 'PersonId', text: @Html.Json(fk_Persons.Select(a => a.FullName)), value: @Html.Json(fk_Persons.Select(a => a.Id)) },
 			null
 		];
 		fsc.pop();

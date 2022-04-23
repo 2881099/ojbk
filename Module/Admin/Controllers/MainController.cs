@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Module.Admin.Controllers
 {
-    [Route("api/module/admin/[controller]")]
+    [Route("api/module/admin/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class MainController : BaseController
     {
-        public MainController(ILogger<MainController> logger) : base(logger) { }
 
         /// <summary>
         /// 后台管理首页

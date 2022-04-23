@@ -20,6 +20,10 @@
 						<th scope="col" style="width:2%;"><input type="checkbox" onclick="$('#GridView1 tbody tr').each(function (idx, el) { var chk = $(el).find('td:first input[type=\'checkbox\']')[0]; if (chk) chk.checked = !chk.checked; });" /></th>
 
 						<th scope="col">主键(自增)</th>
+						<th scope="col">创建时间</th>
+						<th scope="col">更新时间</th>
+						<th scope="col">逻辑删除</th>
+						<th scope="col">排序</th>
 						<th scope="col">姓名</th>
 						<th scope="col">昵称</th>
 						<th scope="col">身份证</th>
@@ -29,10 +33,6 @@
 						<th scope="col">FamilyAddress</th>
 						<th scope="col">是否离职</th>
 						<th scope="col">离职时间</th>
-						<th scope="col">创建时间</th>
-						<th scope="col">更新时间</th>
-						<th scope="col">逻辑删除</th>
-						<th scope="col">排序</th>
 						<th scope="col" style="width:5%;">&nbsp;</th>
 					</tr>
 					<tbody>
@@ -41,6 +41,10 @@
 
 								<td><input type="checkbox" id="id" name="id" value="@item.Id" /></td>
 								<td>@item.Id</td>
+								<td>@item.CreateTime</td>
+								<td>@item.UpdateTime</td>
+								<td>@item.IsDeleted</td>
+								<td>@item.Sort</td>
 								<td>@item.FullName</td>
 								<td>@item.NickName</td>
 								<td>@item.IdCard</td>
@@ -50,10 +54,6 @@
 								<td>@item.FamilyAddress</td>
 								<td>@item.IsLeave</td>
 								<td>@item.LeaveTime</td>
-								<td>@item.CreateTime</td>
-								<td>@item.UpdateTime</td>
-								<td>@item.IsDeleted</td>
-								<td>@item.Sort</td>
 								<td><a href="./edit?Id=@item.Id">修改</a></td>
                             </tr>
 						}
@@ -83,7 +83,7 @@
 		var fqs = _clone(top.mainViewNav.query);
 		delete fqs.page;
 		var fsc = [
-			{ name: 'Posts', field: 'mn_Posts_Id', text: @Html.Json(mn_Posts.Select(a => a.Title)), value: @Html.Json(mn_Posts.Select(a => a.Id)) },
+			{ name: '岗位', field: 'mn_Posts_Id', text: @Html.Json(mn_Posts.Select(a => a.Title)), value: @Html.Json(mn_Posts.Select(a => a.Id)) },
 			null
 		];
 		fsc.pop();

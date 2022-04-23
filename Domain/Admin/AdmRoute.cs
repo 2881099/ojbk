@@ -8,7 +8,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 后台路由，一级=菜单
     /// </summary>
-    public partial class AdmRoute : BaseEntity<AdmRoute, int>, ITenant
+    public partial class AdmRoute : BaseEntity<AdmRoute, int>
     {
         static AdmRoute()
         {

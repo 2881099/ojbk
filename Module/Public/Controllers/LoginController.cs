@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Module.Public.Controllers
 {
-    [Route("api/module/public/[controller]")]
+    [Route("api/module/public/[controller]"), ApiExplorerSettings(GroupName = "公共")]
     public class LoginController : BaseController
     {
-        public LoginController(ILogger<LoginController> logger) : base(logger) { }
 
         /// <summary>
         /// 登陆

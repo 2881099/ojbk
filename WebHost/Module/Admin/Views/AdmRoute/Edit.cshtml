@@ -27,22 +27,6 @@
 							<td id="Parent_td"></td>
 						</tr>
 					    <tr>
-							<td>名称</td>
-							<td><input name="Name" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>前端数据</td>
-							<td><input name="Extdata" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>备注</td>
-							<td><input name="Remark" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
-							<td>TenantId</td>
-							<td><input name="TenantId" type="text" class="datepicker" style="width:60%;" /></td>
-						</tr>
-					    <tr>
 							<td>创建时间</td>
 							<td><input name="CreateTime" type="text" class="datepicker" /></td>
 						</tr>
@@ -57,6 +41,22 @@
 					    <tr>
 							<td>排序</td>
 							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
+						</tr>
+					    <tr>
+							<td>名称</td>
+							<td><input name="Name" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>前端数据</td>
+							<td><input name="Extdata" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>备注</td>
+							<td><input name="Remark" type="text" class="datepicker" style="width:60%;" /></td>
+						</tr>
+					    <tr>
+							<td>TenantId</td>
+							<td><input name="TenantId" type="text" class="datepicker" style="width:60%;" /></td>
 						</tr>
 						<tr>
 							<td>Roles</td>
@@ -92,9 +92,10 @@
 			<text>
 			item = @Html.Json(item);
 			fillForm(form, item);item.mn_Roles = @Html.Json(item.Roles);
-			for (var a = 0; a < item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');
+			for (var a = 0; a @Html.Raw('<') item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');
 			</text>
 		}
+
 		top.mainViewInit();
 	})();
 </script>

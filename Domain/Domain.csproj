@@ -1,19 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>7.1</LangVersion>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<WarningLevel>3</WarningLevel>
+		<DocumentationFile>Domain.xml</DocumentationFile>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>Domain.xml</DocumentationFile>
-    </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="FreeRedis" Version="0.5.1" />
+		<PackageReference Include="FreeSql.DbContext" Version="3.2.500" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.500" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="CSRedisCore" Version="3.1.5" />
-        <PackageReference Include="FreeSql.DbContext" Version="0.9.4" />
-        <PackageReference Include="FreeSql.Provider.Sqlite" Version="0.9.4" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    </ItemGroup>
-    
 </Project>

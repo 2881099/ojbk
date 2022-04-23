@@ -1,9 +1,14 @@
 ﻿using FreeSql;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ojbk.Entities
 {
+
+
+    //public record Record2(Guid id, string title) : BaseEntity<Record2, string>;
+
     /// <summary>
     /// 配置项
     /// </summary>
@@ -52,4 +57,5 @@ namespace ojbk.Entities
         public static Task<AdmConfig> GetByKey(string key) =>
             FindAsync(key);
     }
+
 }

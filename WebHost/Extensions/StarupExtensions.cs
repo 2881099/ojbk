@@ -5,11 +5,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +15,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 
 public static class StarupExtensions {
-	public static ConfigurationBuilder LoadInstalledModules(this ConfigurationBuilder build, IList<ModuleInfo> modules, IHostingEnvironment env) {
+	public static ConfigurationBuilder LoadInstalledModules(this ConfigurationBuilder build, IList<ModuleInfo> modules, IWebHostEnvironment env) {
 		var moduleRootFolder = new DirectoryInfo(Path.Combine(env.ContentRootPath, "Module"));
 		var moduleFolders = moduleRootFolder.GetDirectories();
 
@@ -46,7 +43,7 @@ public static class StarupExtensions {
 		return build;
 	}
 
-	public static ConfigurationBuilder AddCustomizedJsonFile(this ConfigurationBuilder build, IList<ModuleInfo> modules, IHostingEnvironment env, string productPath) {
+	public static ConfigurationBuilder AddCustomizedJsonFile(this ConfigurationBuilder build, IList<ModuleInfo> modules, IWebHostEnvironment env, string productPath) {
 		build.SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json", true, true);
 		foreach (var module in modules) {
 			var jsonpath = $"Module/{module.Name}/appsettings.json";
@@ -65,23 +62,20 @@ public static class StarupExtensions {
 	}
 
 	public static IServiceCollection AddCustomizedMvc(this IServiceCollection services, IList<ModuleInfo> modules) {
-		var mvcBuilder = services.AddMvc().AddJsonOptions(a => {
-				a.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-				a.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-				a.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-			})
+		var mvcBuilder = services.AddMvc()
 			.AddRazorOptions(o => {
-				foreach (var module in modules) {
+				foreach (var module in modules)
+				{
 					var a = MetadataReference.CreateFromFile(module.Assembly.Location);
-					o.AdditionalCompilationReferences.Add(a);
+					//o.AdditionalCompilationReferences.Add(a);
+					o.ViewLocationFormats.Add("Module/" + module.Name + "/Views/{1}/{0}.cshtml");
 				}
 			})
 			.AddViewLocalization()
 			.AddDataAnnotationsLocalization();
 
-		foreach (var module in modules) {
+		foreach (var module in modules)
 			mvcBuilder.AddApplicationPart(module.Assembly);
-		}
 		services.Configure<RazorViewEngineOptions>(options => { options.ViewLocationExpanders.Add(new ModuleViewLocationExpander()); });
 
 		return services;

@@ -21,13 +21,13 @@
 
 						<th scope="col">主键(自增)</th>
 						<th scope="col">部门id</th>
-						<th scope="col">岗位称呼</th>
-						<th scope="col">职责内容</th>
-						<th scope="col">工作内容</th>
 						<th scope="col">创建时间</th>
 						<th scope="col">更新时间</th>
 						<th scope="col">逻辑删除</th>
 						<th scope="col">排序</th>
+						<th scope="col">岗位称呼</th>
+						<th scope="col">职责内容</th>
+						<th scope="col">工作内容</th>
 						<th scope="col" style="width:5%;">&nbsp;</th>
 					</tr>
 					<tbody>
@@ -37,13 +37,13 @@
 								<td><input type="checkbox" id="id" name="id" value="@item.Id" /></td>
 								<td>@item.Id</td>
 								<td>[@item.DepartmentId] @item.Department?.Name</td>
-								<td>@item.Title</td>
-								<td>@item.DutyContent</td>
-								<td>@item.JobContent</td>
 								<td>@item.CreateTime</td>
 								<td>@item.UpdateTime</td>
 								<td>@item.IsDeleted</td>
 								<td>@item.Sort</td>
+								<td>@item.Title</td>
+								<td>@item.DutyContent</td>
+								<td>@item.JobContent</td>
 								<td><a href="./edit?Id=@item.Id">修改</a></td>
                             </tr>
 						}
@@ -75,9 +75,11 @@
 		var fqs = _clone(top.mainViewNav.query);
 		delete fqs.page;
 		var fsc = [
-			{ name: 'Roles', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
-			{ name: 'Department', field: 'DepartmentId', text: @Html.Json(fk_Departments.Select(a => a.Name)), value: @Html.Json(fk_Departments.Select(a => a.Id)) },
-			{ name: 'Persons', field: 'mn_Persons_Id', text: @Html.Json(mn_Persons.Select(a => a.FullName)), value: @Html.Json(mn_Persons.Select(a => a.Id)) },
+			{ name: '角色', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
+			{ name: '部门
+            <para></para>
+            部门 -&gt; 岗位 -&gt; 员工', field: 'DepartmentId', text: @Html.Json(fk_Departments.Select(a => a.Name)), value: @Html.Json(fk_Departments.Select(a => a.Id)) },
+			{ name: '员工', field: 'mn_Persons_Id', text: @Html.Json(mn_Persons.Select(a => a.FullName)), value: @Html.Json(mn_Persons.Select(a => a.Id)) },
 			null
 		];
 		fsc.pop();

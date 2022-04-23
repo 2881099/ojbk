@@ -7,7 +7,7 @@ namespace ojbk.Entities
     /// <summary>
     /// 角色
     /// </summary>
-    public partial class AuthRole : BaseEntity<AuthRole, int>, ITenant
+    public partial class AuthRole : BaseEntity<AuthRole, int>
     {
         /// <summary>
         /// 名称

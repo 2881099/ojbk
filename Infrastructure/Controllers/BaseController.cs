@@ -11,12 +11,12 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 [ServiceFilter(typeof(CustomExceptionFilter)), EnableCors("cors_all")]
 public partial class BaseController : Controller
 {
-    public ILogger _logger;
     public ISession Session { get { return HttpContext.Session; } }
     public HttpRequest Req { get { return Request; } }
     public HttpResponse Res { get { return Response; } }
@@ -24,13 +24,13 @@ public partial class BaseController : Controller
     public string Ip => this.Request.Headers["X-Real-IP"].FirstOrDefault() ?? this.Request.HttpContext.Connection.RemoteIpAddress.ToString();
     public IConfiguration Configuration => (IConfiguration)HttpContext.RequestServices.GetService(typeof(IConfiguration));
 
-    [FromHeader(Name = "token")] public string Header_token { get; set; }
-
     public AuthUser LoginUser { get; private set; }
-    public BaseController(ILogger logger) { _logger = logger; }
 
+    public static AsyncLocal<ControllerContext> CurrentControllerContext = new AsyncLocal<ControllerContext>();
     async public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
+        CurrentControllerContext.Value = this.ControllerContext;
+
         string token = Request.Headers["token"].FirstOrDefault() ?? Request.Query["token"].FirstOrDefault();
         if (!string.IsNullOrEmpty(token))
         {
@@ -40,7 +40,7 @@ public partial class BaseController : Controller
             }
             catch
             {
-                context.Result = ApiResult.Failed.SetMessage("登陆TOKEN失效_请重新登陆"); ;
+                context.Result = ApiResult.Failed.SetMessage("登陆TOKEN失效_请重新登陆");
                 return;
             }
         }

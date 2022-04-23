@@ -8,13 +8,11 @@ public class CustomExceptionFilter : Attribute, IExceptionFilter
 {
     private ILogger _logger = null;
     private IConfiguration _cfg = null;
-    private IHostingEnvironment _env = null;
 
-    public CustomExceptionFilter(ILogger<CustomExceptionFilter> logger, IConfiguration cfg, IHostingEnvironment env)
+    public CustomExceptionFilter(ILogger<CustomExceptionFilter> logger, IConfiguration cfg)
     {
         _logger = logger;
         _cfg = cfg;
-        _env = env;
     }
 
     public void OnException(ExceptionContext context)

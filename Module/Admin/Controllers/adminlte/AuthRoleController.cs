@@ -14,7 +14,7 @@ using ojbk.Entities;
 
 namespace FreeSql.AdminLTE.Controllers
 {
-    [Route("/adminlte/[controller]")]
+    [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class AuthRoleController : Controller
     {
         IFreeSql fsql;
@@ -52,28 +52,25 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("add")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Add([FromForm] string Name, [FromForm] string Remark, [FromForm] string TenantId, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_AdmRoutes_Id, [FromForm] int[] mn_Users_Id, [FromForm] int[] mn_OrgPosts_Id)
+        async public Task<ApiResult> _Add([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] string Name, [FromForm] string Remark, [FromForm] string TenantId, [FromForm] int[] mn_AdmRoutes_Id, [FromForm] int[] mn_Users_Id, [FromForm] int[] mn_OrgPosts_Id)
         {
             var item = new AuthRole();
-            item.Name = Name;
-            item.Remark = Remark;
-            item.TenantId = TenantId;
             item.CreateTime = CreateTime;
             item.UpdateTime = UpdateTime;
             item.IsDeleted = IsDeleted;
             item.Sort = Sort;
+            item.Name = Name;
+            item.Remark = Remark;
+            item.TenantId = TenantId;
             using (var ctx = fsql.CreateDbContext())
             {
                 await ctx.AddAsync(item);
                 //关联 AdmRoute
-                var mn_AdmRoutes = mn_AdmRoutes_Id.Select((mn, idx) => new AuthRole.AuthRoleAdmRoute { AdmRouteId = mn, RoleId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_AdmRoutes);
+                await ctx.SaveManyAsync(item, "AdmRoutes");
                 //关联 AuthUser
-                var mn_Users = mn_Users_Id.Select((mn, idx) => new AuthRole.AuthRoleUser { UserId = mn, RoleId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_Users);
+                await ctx.SaveManyAsync(item, "Users");
                 //关联 OrgPost
-                var mn_OrgPosts = mn_OrgPosts_Id.Select((mn, idx) => new AuthRole.AuthRolePost { OrgPostId = mn, RoleId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_OrgPosts);
+                await ctx.SaveManyAsync(item, "OrgPosts");
                 await ctx.SaveChangesAsync();
             }
             return ApiResult<object>.Success.SetData(item);
@@ -81,63 +78,28 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("edit")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Edit([FromForm] string Name, [FromForm] string Remark, [FromForm] string TenantId, [FromForm] int Id, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_AdmRoutes_Id, [FromForm] int[] mn_Users_Id, [FromForm] int[] mn_OrgPosts_Id)
+        async public Task<ApiResult> _Edit([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int Id, [FromForm] string Name, [FromForm] string Remark, [FromForm] string TenantId, [FromForm] int[] mn_AdmRoutes_Id, [FromForm] int[] mn_Users_Id, [FromForm] int[] mn_OrgPosts_Id)
         {
-            var item = new AuthRole();
-            item.Id = Id;
+            //var item = new AuthRole();
+            //item.Id = Id;
             using (var ctx = fsql.CreateDbContext())
             {
-                ctx.Attach(item);
-                item.Name = Name;
-                item.Remark = Remark;
-                item.TenantId = TenantId;
+                //ctx.Attach(item);
+                var item = await ctx.Set<AuthRole>().Where(a => a.Id == Id).FirstAsync();
                 item.CreateTime = CreateTime;
                 item.UpdateTime = UpdateTime;
                 item.IsDeleted = IsDeleted;
                 item.Sort = Sort;
+                item.Name = Name;
+                item.Remark = Remark;
+                item.TenantId = TenantId;
                 await ctx.UpdateAsync(item);
                 //关联 AdmRoute
-                if (mn_AdmRoutes_Id != null)
-                {
-                    var mn_AdmRoutes_Id_list = mn_AdmRoutes_Id.ToList();
-                    var oldlist = ctx.Set<AuthRole.AuthRoleAdmRoute>().Where(a => a.RoleId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_AdmRoutes_Id_list.FindIndex(a => a == olditem.AdmRouteId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_AdmRoutes_Id_list.RemoveAt(idx);
-                    }
-                    var mn_AdmRoutes = mn_AdmRoutes_Id_list.Select((mn, idx) => new AuthRole.AuthRoleAdmRoute { AdmRouteId = mn, RoleId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_AdmRoutes);
-                }
+                await ctx.SaveManyAsync(item, "AdmRoutes");
                 //关联 AuthUser
-                if (mn_Users_Id != null)
-                {
-                    var mn_Users_Id_list = mn_Users_Id.ToList();
-                    var oldlist = ctx.Set<AuthRole.AuthRoleUser>().Where(a => a.RoleId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_Users_Id_list.FindIndex(a => a == olditem.UserId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_Users_Id_list.RemoveAt(idx);
-                    }
-                    var mn_Users = mn_Users_Id_list.Select((mn, idx) => new AuthRole.AuthRoleUser { UserId = mn, RoleId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_Users);
-                }
+                await ctx.SaveManyAsync(item, "Users");
                 //关联 OrgPost
-                if (mn_OrgPosts_Id != null)
-                {
-                    var mn_OrgPosts_Id_list = mn_OrgPosts_Id.ToList();
-                    var oldlist = ctx.Set<AuthRole.AuthRolePost>().Where(a => a.RoleId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_OrgPosts_Id_list.FindIndex(a => a == olditem.OrgPostId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_OrgPosts_Id_list.RemoveAt(idx);
-                    }
-                    var mn_OrgPosts = mn_OrgPosts_Id_list.Select((mn, idx) => new AuthRole.AuthRolePost { OrgPostId = mn, RoleId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_OrgPosts);
-                }
+                await ctx.SaveManyAsync(item, "OrgPosts");
                 var affrows = await ctx.SaveChangesAsync();
                 if (affrows > 0) return ApiResult.Success.SetMessage($"更新成功，影响行数：{affrows}");
             }

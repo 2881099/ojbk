@@ -14,7 +14,7 @@ using ojbk.Entities;
 
 namespace FreeSql.AdminLTE.Controllers
 {
-    [Route("/adminlte/[controller]")]
+    [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
     public class OrgPersonController : Controller
     {
         IFreeSql fsql;
@@ -50,9 +50,13 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("add")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Add([FromForm] string FullName, [FromForm] string NickName, [FromForm] string IdCard, [FromForm] string IdCardAddress, [FromForm] string Mobile, [FromForm] string Email, [FromForm] string FamilyAddress, [FromForm] bool IsLeave, [FromForm] DateTime LeaveTime, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Posts_Id)
+        async public Task<ApiResult> _Add([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] string FullName, [FromForm] string NickName, [FromForm] string IdCard, [FromForm] string IdCardAddress, [FromForm] string Mobile, [FromForm] string Email, [FromForm] string FamilyAddress, [FromForm] bool IsLeave, [FromForm] DateTime LeaveTime, [FromForm] int[] mn_Posts_Id)
         {
             var item = new OrgPerson();
+            item.CreateTime = CreateTime;
+            item.UpdateTime = UpdateTime;
+            item.IsDeleted = IsDeleted;
+            item.Sort = Sort;
             item.FullName = FullName;
             item.NickName = NickName;
             item.IdCard = IdCard;
@@ -62,16 +66,11 @@ namespace FreeSql.AdminLTE.Controllers
             item.FamilyAddress = FamilyAddress;
             item.IsLeave = IsLeave;
             item.LeaveTime = LeaveTime;
-            item.CreateTime = CreateTime;
-            item.UpdateTime = UpdateTime;
-            item.IsDeleted = IsDeleted;
-            item.Sort = Sort;
             using (var ctx = fsql.CreateDbContext())
             {
                 await ctx.AddAsync(item);
                 //关联 OrgPost
-                var mn_Posts = mn_Posts_Id.Select((mn, idx) => new OrgPost.OrgPostPerson { PostId = mn, PersonId = item.Id }).ToArray();
-                await ctx.AddRangeAsync(mn_Posts);
+                await ctx.SaveManyAsync(item, "Posts");
                 await ctx.SaveChangesAsync();
             }
             return ApiResult<object>.Success.SetData(item);
@@ -79,13 +78,18 @@ namespace FreeSql.AdminLTE.Controllers
 
         [HttpPost("edit")]
         [ValidateAntiForgeryToken]
-        async public Task<ApiResult> _Edit([FromForm] string FullName, [FromForm] string NickName, [FromForm] string IdCard, [FromForm] string IdCardAddress, [FromForm] string Mobile, [FromForm] string Email, [FromForm] string FamilyAddress, [FromForm] bool IsLeave, [FromForm] DateTime LeaveTime, [FromForm] int Id, [FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int[] mn_Posts_Id)
+        async public Task<ApiResult> _Edit([FromForm] DateTime CreateTime, [FromForm] DateTime UpdateTime, [FromForm] bool IsDeleted, [FromForm] int Sort, [FromForm] int Id, [FromForm] string FullName, [FromForm] string NickName, [FromForm] string IdCard, [FromForm] string IdCardAddress, [FromForm] string Mobile, [FromForm] string Email, [FromForm] string FamilyAddress, [FromForm] bool IsLeave, [FromForm] DateTime LeaveTime, [FromForm] int[] mn_Posts_Id)
         {
-            var item = new OrgPerson();
-            item.Id = Id;
+            //var item = new OrgPerson();
+            //item.Id = Id;
             using (var ctx = fsql.CreateDbContext())
             {
-                ctx.Attach(item);
+                //ctx.Attach(item);
+                var item = await ctx.Set<OrgPerson>().Where(a => a.Id == Id).FirstAsync();
+                item.CreateTime = CreateTime;
+                item.UpdateTime = UpdateTime;
+                item.IsDeleted = IsDeleted;
+                item.Sort = Sort;
                 item.FullName = FullName;
                 item.NickName = NickName;
                 item.IdCard = IdCard;
@@ -95,25 +99,9 @@ namespace FreeSql.AdminLTE.Controllers
                 item.FamilyAddress = FamilyAddress;
                 item.IsLeave = IsLeave;
                 item.LeaveTime = LeaveTime;
-                item.CreateTime = CreateTime;
-                item.UpdateTime = UpdateTime;
-                item.IsDeleted = IsDeleted;
-                item.Sort = Sort;
                 await ctx.UpdateAsync(item);
                 //关联 OrgPost
-                if (mn_Posts_Id != null)
-                {
-                    var mn_Posts_Id_list = mn_Posts_Id.ToList();
-                    var oldlist = ctx.Set<OrgPost.OrgPostPerson>().Where(a => a.PersonId == item.Id).ToList();
-                    foreach (var olditem in oldlist)
-                    {
-                        var idx = mn_Posts_Id_list.FindIndex(a => a == olditem.PostId);
-                        if (idx == -1) ctx.Remove(olditem);
-                        else mn_Posts_Id_list.RemoveAt(idx);
-                    }
-                    var mn_Posts = mn_Posts_Id_list.Select((mn, idx) => new OrgPost.OrgPostPerson { PostId = mn, PersonId = item.Id }).ToArray();
-                    await ctx.AddRangeAsync(mn_Posts);
-                }
+                await ctx.SaveManyAsync(item, "Posts");
                 var affrows = await ctx.SaveChangesAsync();
                 if (affrows > 0) return ApiResult.Success.SetMessage($"更新成功，影响行数：{affrows}");
             }

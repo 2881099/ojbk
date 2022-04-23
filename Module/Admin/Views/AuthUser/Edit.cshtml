@@ -32,6 +32,22 @@
                             </td>
 					    </tr>
 					    <tr>
+							<td>创建时间</td>
+							<td><input name="CreateTime" type="text" class="datepicker" /></td>
+						</tr>
+					    <tr>
+							<td>更新时间</td>
+							<td><input name="UpdateTime" type="text" class="datepicker" /></td>
+						</tr>
+					    <tr>
+							<td>逻辑删除</td>
+							<td id="IsDeleted_td"><input name="IsDeleted" type="checkbox" value="true" /></td>
+						</tr>
+					    <tr>
+							<td>排序</td>
+							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
+						</tr>
+					    <tr>
 							<td>用户名</td>
 							<td><input name="Username" type="text" class="datepicker" style="width:60%;" /></td>
 						</tr>
@@ -58,22 +74,6 @@
 					    <tr>
 							<td>是否为系统管理员</td>
 							<td id="IsAdmin_td"><input name="IsAdmin" type="checkbox" value="true" /></td>
-						</tr>
-					    <tr>
-							<td>创建时间</td>
-							<td><input name="CreateTime" type="text" class="datepicker" /></td>
-						</tr>
-					    <tr>
-							<td>更新时间</td>
-							<td><input name="UpdateTime" type="text" class="datepicker" /></td>
-						</tr>
-					    <tr>
-							<td>逻辑删除</td>
-							<td id="IsDeleted_td"><input name="IsDeleted" type="checkbox" value="true" /></td>
-						</tr>
-					    <tr>
-							<td>排序</td>
-							<td><input name="Sort" type="text" class="form-control" data-inputmask="'mask': '9', 'repeat': 6, 'greedy': false" data-mask style="width:200px;" /></td>
 						</tr>
 						<tr>
 							<td>Roles</td>
@@ -108,9 +108,10 @@
 			<text>
 			item = @Html.Json(item);
 			fillForm(form, item);item.mn_Roles = @Html.Json(item.Roles);
-			for (var a = 0; a < item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');
+			for (var a = 0; a @Html.Raw('<') item.mn_Roles.length; a++) $(form.mn_Roles_Id).find('option[value="{0}"]'.format(item.mn_Roles[a].Id)).attr('selected', 'selected');
 			</text>
 		}
+
 		top.mainViewInit();
 	})();
 </script>

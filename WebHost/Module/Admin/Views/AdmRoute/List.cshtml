@@ -21,14 +21,14 @@
 
 						<th scope="col">主键(自增)</th>
 						<th scope="col">父节点</th>
-						<th scope="col">名称</th>
-						<th scope="col">前端数据</th>
-						<th scope="col">备注</th>
-						<th scope="col">TenantId</th>
 						<th scope="col">创建时间</th>
 						<th scope="col">更新时间</th>
 						<th scope="col">逻辑删除</th>
 						<th scope="col">排序</th>
+						<th scope="col">名称</th>
+						<th scope="col">前端数据</th>
+						<th scope="col">备注</th>
+						<th scope="col">TenantId</th>
 						<th scope="col" style="width:5%;">&nbsp;</th>
 					</tr>
 					<tbody>
@@ -38,14 +38,14 @@
 								<td><input type="checkbox" id="id" name="id" value="@item.Id" /></td>
 								<td>@item.Id</td>
 								<td>[@item.ParentId] @item.Parent?.Name</td>
-								<td>@item.Name</td>
-								<td>@item.Extdata</td>
-								<td>@item.Remark</td>
-								<td>@item.TenantId</td>
 								<td>@item.CreateTime</td>
 								<td>@item.UpdateTime</td>
 								<td>@item.IsDeleted</td>
 								<td>@item.Sort</td>
+								<td>@item.Name</td>
+								<td>@item.Extdata</td>
+								<td>@item.Remark</td>
+								<td>@item.TenantId</td>
 								<td><a href="./edit?Id=@item.Id">修改</a></td>
                             </tr>
 						}
@@ -76,8 +76,8 @@
 		var fqs = _clone(top.mainViewNav.query);
 		delete fqs.page;
 		var fsc = [
-			{ name: 'Parent', field: 'ParentId', text: @Html.Json(fk_Parents.Select(a => a.Name)), value: @Html.Json(fk_Parents.Select(a => a.Id)) },
-			{ name: 'Roles', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
+			{ name: '后台路由，一级=菜单', field: 'ParentId', text: @Html.Json(fk_Parents.Select(a => a.Name)), value: @Html.Json(fk_Parents.Select(a => a.Id)) },
+			{ name: '角色', field: 'mn_Roles_Id', text: @Html.Json(mn_Roles.Select(a => a.Name)), value: @Html.Json(mn_Roles.Select(a => a.Id)) },
 			null
 		];
 		fsc.pop();
