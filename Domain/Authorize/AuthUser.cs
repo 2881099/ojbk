@@ -17,7 +17,7 @@ namespace ojbk.Entities
                 new AuthUser
                 {
                     IsAdmin = true,
-                    Password = Util.MD5("admin"),
+                    Password = Util.Md5("admin"),
                     Status = AuthUserStatus.正常,
                     Username = "admin"
                 }.Insert();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -30,11 +31,11 @@ public static class Util
         return BitConverter.ToString(hmac.ComputeHash(buffer)).Replace("-", "").ToLower();
     }
 
-    public static string SHA1(string text, Encoding encode)
+    public static string Sha1(string text, Encoding encode)
     {
         try
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            SHA1 sha1 = SHA1.Create();
             byte[] bytes_in = encode.GetBytes(text);
             byte[] bytes_out = sha1.ComputeHash(bytes_in);
             sha1.Dispose();
@@ -48,7 +49,7 @@ public static class Util
         }
     }
 
-    public static string MD5(string source)
+    public static string Md5(string source)
     {
         byte[] sor = Encoding.UTF8.GetBytes(source);
         MD5 md5 = System.Security.Cryptography.MD5.Create();
@@ -59,41 +60,53 @@ public static class Util
         return strbul.ToString();
     }
 
-    public static string AESEncrypt(string text, byte[] key, byte[] iv)
+    public static string AesEncrypt(string text, byte[] key, byte[] iv)
     {
-        RijndaelManaged rijndaelCipher = new RijndaelManaged();
-        rijndaelCipher.Mode = CipherMode.CBC;
-        rijndaelCipher.Padding = PaddingMode.PKCS7;
-        rijndaelCipher.KeySize = 128;
-        rijndaelCipher.BlockSize = 128;
-        byte[] keyBytes = new byte[16];
-        Array.Copy(key, keyBytes, Math.Min(keyBytes.Length, key.Length));
-        rijndaelCipher.Key = keyBytes;
-        byte[] ivBytes = new byte[16];
-        Array.Copy(iv, ivBytes, Math.Min(ivBytes.Length, iv.Length));
-        rijndaelCipher.IV = ivBytes;
-        ICryptoTransform transform = rijndaelCipher.CreateEncryptor();
-        byte[] plainText = Encoding.UTF8.GetBytes(text);
-        byte[] cipherBytes = transform.TransformFinalBlock(plainText, 0, plainText.Length);
-        return Convert.ToBase64String(cipherBytes);
+        if (text == null || text.Length <= 0) throw new ArgumentNullException("text");
+        if (key == null || key.Length <= 0) throw new ArgumentNullException("key");
+        if (iv == null || iv.Length <= 0) throw new ArgumentNullException("iv");
+
+        byte[] encrypted;
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = key;
+            aesAlg.IV = iv;
+
+            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+            using (var msEncrypt = new MemoryStream())
+            {
+                using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                using (var swEncrypt = new StreamWriter(csEncrypt))
+                    swEncrypt.Write(text);
+                encrypted = msEncrypt.ToArray();
+                msEncrypt.Close();
+            }
+        }
+        return Convert.ToBase64String(encrypted);
     }
-    public static string AESDecrypt(string base64_text, byte[] key, byte[] iv)
+    public static string AesDecrypt(string base64_text, byte[] key, byte[] iv)
     {
-        RijndaelManaged rijndaelCipher = new RijndaelManaged();
-        rijndaelCipher.Mode = CipherMode.CBC;
-        rijndaelCipher.Padding = PaddingMode.PKCS7;
-        rijndaelCipher.KeySize = 128;
-        rijndaelCipher.BlockSize = 128;
         byte[] encryptedData = Convert.FromBase64String(base64_text);
-        byte[] keyBytes = new byte[16];
-        Array.Copy(key, keyBytes, Math.Min(keyBytes.Length, key.Length));
-        rijndaelCipher.Key = keyBytes;
-        byte[] ivBytes = new byte[16];
-        Array.Copy(iv, ivBytes, Math.Min(ivBytes.Length, iv.Length));
-        rijndaelCipher.IV = ivBytes;
-        ICryptoTransform transform = rijndaelCipher.CreateDecryptor();
-        byte[] plainText = transform.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
-        return Encoding.UTF8.GetString(plainText);
+        if (encryptedData == null || encryptedData.Length <= 0) throw new ArgumentNullException("base64_text");
+        if (key == null || key.Length <= 0) throw new ArgumentNullException("key");
+        if (iv == null || iv.Length <= 0) throw new ArgumentNullException("iv");
+
+        string plaintext = null;
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = key;
+            aesAlg.IV = iv;
+
+            var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+            using (var msDecrypt = new MemoryStream(encryptedData))
+            {
+                using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    plaintext = srDecrypt.ReadToEnd();
+                msDecrypt.Close();
+            }
+        }
+        return plaintext;
     }
 
     public static string Mask(string str, int maskLeft, int maskRight)

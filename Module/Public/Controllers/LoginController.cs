@@ -22,7 +22,7 @@ namespace Module.Public.Controllers
             var user = await AuthUser.Where(a => a.Username == username).FirstAsync();
             if (user == null) return ApiResult.Failed.SetMessage("账户不存在");
             if (user.Status == AuthUserStatus.禁用) return ApiResult.Failed.SetMessage("该账户已禁用，请联系管理员");
-            if (user.Password != Util.MD5(password)) return ApiResult.Failed.SetMessage("密码错误");
+            if (user.Password != Util.Md5(password)) return ApiResult.Failed.SetMessage("密码错误");
 
             user.LoginIp = base.Ip;
             user.LoginTime = DateTime.Now;
@@ -45,7 +45,7 @@ namespace Module.Public.Controllers
             if (string.IsNullOrEmpty(password)) return ApiResult.Failed.SetMessage("密码不能为空");
 
             var user = base.LoginUser;
-            if (user.Password != Util.MD5(oldPassword)) return ApiResult.Failed.SetMessage("原密码错误");
+            if (user.Password != Util.Md5(oldPassword)) return ApiResult.Failed.SetMessage("原密码错误");
 
             user.Password = password;
             await user.UpdateAsync();

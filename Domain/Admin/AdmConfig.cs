@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 namespace ojbk.Entities
 {
 
-
-    //public record Record2(Guid id, string title) : BaseEntity<Record2, string>;
-
     /// <summary>
     /// 配置项
     /// </summary>
     public class AdmConfig : BaseEntity<AdmConfig, string>
     {
+        static AdmConfig()
+        {
+            
+        }
+
         /// <summary>
         /// 值
         /// </summary>

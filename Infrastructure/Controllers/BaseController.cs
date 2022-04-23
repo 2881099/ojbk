@@ -58,11 +58,11 @@ public partial class BaseController : Controller
     protected string GetUserToken(AuthUser user)
     {
         string text = JsonConvert.SerializeObject(Tuple.Create(user.Id, Guid.NewGuid(), user.LoginTime.GetTime()));
-        return Util.AESEncrypt(text, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"]));
+        return Util.AesEncrypt(text, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"]));
     }
     async protected Task<AuthUser> GetUserByToken(string token)
     {
-        var data = Util.AESDecrypt(token, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"])); //解密
+        var data = Util.AesDecrypt(token, Encoding.UTF8.GetBytes(Configuration["login_aes:key"]), Encoding.UTF8.GetBytes(Configuration["login_aes:iv"])); //解密
         var at = JsonConvert.DeserializeObject<(int UserId, Guid RandomId, long LoginTime)>(data);
         var user = await AuthUser.FindAsync(at.UserId);
         if (user.Status == AuthUserStatus.禁用) return null;

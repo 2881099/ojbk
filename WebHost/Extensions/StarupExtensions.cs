@@ -63,20 +63,11 @@ public static class StarupExtensions {
 
 	public static IServiceCollection AddCustomizedMvc(this IServiceCollection services, IList<ModuleInfo> modules) {
 		var mvcBuilder = services.AddMvc()
-			.AddRazorOptions(o => {
-				foreach (var module in modules)
-				{
-					var a = MetadataReference.CreateFromFile(module.Assembly.Location);
-					//o.AdditionalCompilationReferences.Add(a);
-					o.ViewLocationFormats.Add("Module/" + module.Name + "/Views/{1}/{0}.cshtml");
-				}
-			})
 			.AddViewLocalization()
 			.AddDataAnnotationsLocalization();
 
 		foreach (var module in modules)
 			mvcBuilder.AddApplicationPart(module.Assembly);
-		services.Configure<RazorViewEngineOptions>(options => { options.ViewLocationExpanders.Add(new ModuleViewLocationExpander()); });
 
 		return services;
 	}
