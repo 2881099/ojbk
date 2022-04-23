@@ -15,7 +15,7 @@ using ojbk.Entities;
 namespace FreeSql.AdminLTE.Controllers
 {
     [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
-    public class AuthRoleController : Controller
+    public class AuthRoleController : BaseController
     {
         IFreeSql fsql;
         public AuthRoleController(IFreeSql orm) {

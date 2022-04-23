@@ -748,3 +748,28 @@ Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error pa
    at NLog.Config.Factory`2.CreateInstance(String itemName)
    at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
    --- End of inner exception stack trace ---
+Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error parsing layout document-uri
+ ---> System.ArgumentException: LayoutRenderer symbol-name is unknown: 'documenturi'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
+   --- End of inner exception stack trace ---
+Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error parsing layout document-uri
+ ---> System.ArgumentException: LayoutRenderer symbol-name is unknown: 'documenturi'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
+   --- End of inner exception stack trace ---
+Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error parsing layout document-uri
+ ---> System.ArgumentException: LayoutRenderer symbol-name is unknown: 'documenturi'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
+   --- End of inner exception stack trace ---
+Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error parsing layout document-uri
+ ---> System.ArgumentException: LayoutRenderer symbol-name is unknown: 'documenturi'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
+   --- End of inner exception stack trace ---
+Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error parsing layout document-uri
+ ---> System.ArgumentException: LayoutRenderer symbol-name is unknown: 'documenturi'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(String typeName, ConfigurationItemFactory configurationItemFactory, Nullable`1 throwConfigExceptions)
+   --- End of inner exception stack trace ---

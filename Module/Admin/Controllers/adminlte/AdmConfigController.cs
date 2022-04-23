@@ -15,7 +15,7 @@ using ojbk.Entities;
 namespace FreeSql.AdminLTE.Controllers
 {
     [Route("/adminlte/[controller]"), ApiExplorerSettings(GroupName = "后台管理")]
-    public class AdmConfigController : Controller
+    public class AdmConfigController : BaseController
     {
         IFreeSql fsql;
         public AdmConfigController(IFreeSql orm) {
