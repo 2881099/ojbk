@@ -10,7 +10,7 @@
 		<PackageReference Include="FreeRedis" Version="0.5.1" />
 		<PackageReference Include="FreeSql.DbContext" Version="3.2.500" />
 		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.500" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
 </Project>
